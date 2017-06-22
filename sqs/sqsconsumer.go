@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
-	"encoding/json"
+	"naren/kulay/config"
 )
-var svc *sqs.SQS
 
-func Consume() {
+var consumerSvc *sqs.SQS
+
+func pull(snd chan<- string, done chan bool) {
 	sess := NewSession()
-	svc = sqs.New(sess)
-	qURL := "test_queue"
-	fmt.Println("CREATED SVC")
+	consumerSvc = sqs.New(sess)
+	qURL := config.KulayConf.QueueUrl
 	for {
-		result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
+		result, err := consumerSvc.ReceiveMessage(&sqs.ReceiveMessageInput{
 			AttributeNames: []*string{
 				aws.String(sqs.MessageSystemAttributeNameSentTimestamp),
 			},
@@ -36,11 +36,8 @@ func Consume() {
 			return
 		}
 		for _, msg := range result.Messages {
-			var parsed interface{}
-			if err := json.Unmarshal([]byte(*msg.Body), &parsed); err != nil {
-				fmt.Println("Error parsing json")
-			}
-			resultDelete, err := svc.DeleteMessage(&sqs.DeleteMessageInput{
+			parsed := msg.Body
+			_, err := consumerSvc.DeleteMessage(&sqs.DeleteMessageInput{
 				QueueUrl:      &qURL,
 				ReceiptHandle: msg.ReceiptHandle,
 			})
@@ -48,9 +45,9 @@ func Consume() {
 				fmt.Println("Delete Error", err)
 				return
 			}
-			fmt.Println("Message Deleted", resultDelete)
-			fmt.Println(parsed)
+			fmt.Println("Message Deleted")
+			snd <- *parsed
 		}
 	}
+	done <- true
 
-}
