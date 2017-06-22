@@ -6,10 +6,6 @@ import (
 )
 
 func main() {
-	cmd.Execute()
 	config.Load()
-	//if err := cmd.RootCmd.Execute(); err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
+	cmd.Execute()
 }
