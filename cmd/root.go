@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"os"
 )
-
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "kulay",
 	Short: "High speed message routing",
-	Long:  `Pull messages from desired service and push to other queues or write to file system.
+	Long:  `Pull messages from desired service and push to other service or write to file system.
 			SQS -> Redis, RedisPubSub -> SQS, RabbitMQ -> kafka ...`,
 	Run: func(cmd *cobra.Command, args []string) {
 		kulayApp()
