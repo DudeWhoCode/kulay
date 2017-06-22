@@ -51,3 +51,9 @@ func pull(snd chan<- string, done chan bool) {
 	}
 	done <- true
 
+}
+
+func Consume(pipe chan<- string, done chan bool) {
+	fmt.Println("starting go Consume routine")
+	go pull(pipe, done)
+}
