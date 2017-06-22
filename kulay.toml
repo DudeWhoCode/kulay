@@ -1,0 +1,4 @@
+[sqs]
+queue_name = "alfred_test"
+region = "us-east-1"
+delete_msg = true
