@@ -9,10 +9,9 @@ import (
 
 var consumerSvc *sqs.SQS
 
-func pull(snd chan<- string, done chan bool) {
+func pull(qURL string, snd chan<- string, done chan bool) {
 	sess := NewSession()
 	consumerSvc = sqs.New(sess)
-	qURL := config.KulayConf.QueueUrl
 	for {
 		result, err := consumerSvc.ReceiveMessage(&sqs.ReceiveMessageInput{
 			AttributeNames: []*string{
@@ -53,7 +52,8 @@ func pull(snd chan<- string, done chan bool) {
 
 }
 
-func Consume(pipe chan<- string, done chan bool) {
+func Consume(pipe chan<- string, done chan bool, cfg config.Kulay) {
+	qURL := cfg.QueueUrl
 	fmt.Println("starting go Consume routine")
-	go pull(pipe, done)
+	go pull(qURL, pipe, done)
 }
