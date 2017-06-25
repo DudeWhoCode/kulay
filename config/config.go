@@ -1,22 +1,23 @@
 package config
 
 import (
+	"fmt"
+	"github.com/spf13/viper"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
-	"github.com/spf13/viper"
-	"fmt"
 )
 
 type Kulay struct {
 	QueueUrl string
 	Region   string
 	Delete   bool
+	Service  string
 }
 
 // Kulay config variable
-var KulayConf *Kulay
+var KulayConf Kulay
 
 func viperCfg() {
 	filePath := os.Getenv("KULAY_CONF")
@@ -30,18 +31,11 @@ func viperCfg() {
 	viper.SetConfigName(file)
 	viper.SetConfigType("toml")
 	viper.SetDefault("sqs.delete", true)
-
-	//user, err := user.Current()
-	//if err != nil {
-	//	fmt.Println("{viperCfg}", err)
-	//}
-
-	//viper.SetDefault("queries.location", filepath.Join(user.HomeDir, "queries"))
 }
 
-
 // Parse kulay config
-func Parse(cfg *Kulay) (err error) {
+func Parse(section string) (KulayConf Kulay, err error) {
+	KulayConf = Kulay{}
 	err = viper.ReadInConfig()
 	if err != nil {
 		switch err.(type) {
@@ -51,19 +45,21 @@ func Parse(cfg *Kulay) (err error) {
 			return
 		}
 	}
-	cfg.QueueUrl = viper.GetString("sqs.queue_url")
-	cfg.Region = viper.GetString("sqs.region")
-	cfg.Delete = viper.GetBool("sqs.delete_msg")
+	subtree := "sqs." + section
+	fmt.Println(subtree)
+	subv := viper.Sub(subtree)
+	KulayConf.QueueUrl = subv.GetString("queue_url")
+	KulayConf.Region = subv.GetString("region")
+	KulayConf.Delete = subv.GetBool("delete_msg")
 	return
 }
 
 // Load configuration
-func Load() {
+func Load(section string) Kulay {
 	viperCfg()
-	KulayConf = &Kulay{}
-	err := Parse(KulayConf)
+	cfg, err := Parse(section)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("LOADED CONFIG : ", KulayConf)
+	return cfg
 }
