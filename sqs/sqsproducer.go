@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
+	"naren/kulay/config"
 )
 
 var producerSvc *sqs.SQS
 
-func produce(rec <-chan string, done chan bool) {
+func produce(qURL string, rec <-chan string, done chan bool) {
 	sess := NewSession()
 	producerSvc = sqs.New(sess)
-	qURL := "https://sqs.ap-southeast-1.amazonaws.com/971037846030/test"
 	fmt.Println("before send message")
 	for msg := range rec {
 		result, err := producerSvc.SendMessage(&sqs.SendMessageInput{
@@ -28,7 +28,8 @@ func produce(rec <-chan string, done chan bool) {
 	done <- true
 }
 
-func Push(pipe <-chan string, done chan bool) {
+func Push(pipe <-chan string, done chan bool, cfg config.Kulay) {
+	qURL := cfg.QueueUrl
 	fmt.Println("starting go Produce routine")
-	produce(pipe, done)
+	produce(qURL, pipe, done)
 }
