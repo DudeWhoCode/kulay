@@ -1,14 +1,14 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 	ksqs "naren/kulay/sqs"
-	"fmt"
 )
 
 // consumeCmd represents the sqs consumer command
-var ConsumeCmd = &cobra.Command{
-	Use:   "consume",
+var FromCmd = &cobra.Command{
+	Use:   "from",
 	Short: "sqs consumer",
 	Long:  `sqs consumer`,
 	Run: func(cmd *cobra.Command, args []string) {
