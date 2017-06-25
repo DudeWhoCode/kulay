@@ -6,7 +6,7 @@ import (
 
 var sess *session.Session
 
-func NewSession() (*session.Session) {
+func NewSession() *session.Session {
 	sess = session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
