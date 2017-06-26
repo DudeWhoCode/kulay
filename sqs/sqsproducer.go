@@ -1,10 +1,10 @@
 package sqsapp
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"naren/kulay/config"
+	. "naren/kulay/logger"
 )
 
 var producerSvc *sqs.SQS
@@ -12,7 +12,6 @@ var producerSvc *sqs.SQS
 func produce(qURL string, rec <-chan string, done chan bool) {
 	sess := NewSession()
 	producerSvc = sqs.New(sess)
-	fmt.Println("before send message")
 	for msg := range rec {
 		result, err := producerSvc.SendMessage(&sqs.SendMessageInput{
 			DelaySeconds: aws.Int64(10),
@@ -20,16 +19,15 @@ func produce(qURL string, rec <-chan string, done chan bool) {
 			QueueUrl:     &qURL,
 		})
 		if err != nil {
-			fmt.Println("Error", err)
+			Log.Error("Error while sending message : ", err)
 			continue
 		}
-		fmt.Println("Success", *result.MessageId)
+		Log.Info("Sent message to SQS queue : ", *result.MessageId)
 	}
 	done <- true
 }
 
-func Push(pipe <-chan string, done chan bool, cfg config.Kulay) {
+func Put(pipe <-chan string, done chan bool, cfg config.Kulay) {
 	qURL := cfg.QueueUrl
-	fmt.Println("starting go Produce routine")
 	produce(qURL, pipe, done)
 }
