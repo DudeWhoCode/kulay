@@ -1,12 +1,12 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
-	"os"
 	"naren/kulay/config"
-	"strings"
 	ksqs "naren/kulay/sqs"
+	"os"
+	"strings"
+	. "naren/kulay/logger"
 )
 
 var FromFlag string
@@ -24,21 +24,35 @@ var RootCmd = &cobra.Command{
 }
 
 func Execute() {
-	//RootCmd.AddCommand(FromCmd)
 	RootCmd.PersistentFlags().StringVarP(&FromFlag, "from", "f", "",
 		"Source service to route from")
 	RootCmd.PersistentFlags().StringVarP(&ToFlag, "to", "t", "",
 		"Source service to route to")
-	//FromCmd.AddCommand(ToCmd)
 	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		Log.Error("Command Execution error : ", err)
 		os.Exit(-1)
+	}
+}
+
+func initFromSvc(svc string, cfg config.Kulay, pipe chan string, done chan bool) {
+	switch svc {
+	case "sqs":
+		Log.Info("Initialized SQS consumer")
+		ksqs.Get(pipe, done, cfg)
+	}
+}
+
+func initToSvc(svc string, cfg config.Kulay, pipe chan string, done chan bool) {
+	switch svc {
+	case "sqs":
+		Log.Info("Initialized SQS producer")
+		ksqs.Put(pipe, done, cfg)
 	}
 }
 
 func kulayApp() {
 	if FromFlag == "" || ToFlag == "" {
-		fmt.Println("Need to specify both from and to flags")
+		Log.Error("Need to specify both from and to flags")
 		os.Exit(-1)
 	}
 	FromSvc := strings.Split(FromFlag, ".")[0]
@@ -47,15 +61,9 @@ func kulayApp() {
 	ToSec := strings.Split(ToFlag, ".")[1]
 	FromConfig := config.Load(FromSec)
 	ToConfig := config.Load(ToSec)
-	fmt.Println(FromSvc)
-	fmt.Println(ToSvc)
 	pipe := make(chan string, 20)
 	done := make(chan bool)
-	if FromSvc == "sqs" {
-		ksqs.Consume(pipe, done, FromConfig)
-	}
-	if ToSvc == "sqs" {
-		ksqs.Push(pipe, done, ToConfig)
-	}
+	initFromSvc(FromSvc, FromConfig, pipe, done)
+	initToSvc(ToSvc, ToConfig, pipe, done)
 	<-done
 }
