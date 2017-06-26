@@ -1,12 +1,12 @@
 package config
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+	. "naren/kulay/logger"
 )
 
 type Kulay struct {
@@ -15,9 +15,6 @@ type Kulay struct {
 	Delete   bool
 	Service  string
 }
-
-// Kulay config variable
-var KulayConf Kulay
 
 func viperCfg() {
 	filePath := os.Getenv("KULAY_CONF")
@@ -40,13 +37,12 @@ func Parse(section string) (KulayConf Kulay, err error) {
 	if err != nil {
 		switch err.(type) {
 		case viper.ConfigFileNotFoundError:
-			fmt.Println("Running without config file")
+			Log.Warn("Running without config file")
 		default:
 			return
 		}
 	}
 	subtree := "sqs." + section
-	fmt.Println(subtree)
 	subv := viper.Sub(subtree)
 	KulayConf.QueueUrl = subv.GetString("queue_url")
 	KulayConf.Region = subv.GetString("region")
