@@ -1,15 +1,15 @@
 package sqsapp
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"naren/kulay/config"
+	. "naren/kulay/logger"
 )
 
 var consumerSvc *sqs.SQS
 
-func pull(qURL string, snd chan<- string, done chan bool) {
+func consume(qURL string, snd chan<- string, done chan bool, del bool) {
 	sess := NewSession()
 	consumerSvc = sqs.New(sess)
 	for {
@@ -26,25 +26,28 @@ func pull(qURL string, snd chan<- string, done chan bool) {
 			WaitTimeSeconds:     aws.Int64(20),
 		})
 		if err != nil {
-			fmt.Println("Error", err)
+			Log.Error("Error", err)
 			return
 		}
 
 		if len(result.Messages) == 0 {
-			fmt.Println("Received no messages")
+			Log.Warn("Received no messages")
 			return
 		}
 		for _, msg := range result.Messages {
 			parsed := msg.Body
-			_, err := consumerSvc.DeleteMessage(&sqs.DeleteMessageInput{
-				QueueUrl:      &qURL,
-				ReceiptHandle: msg.ReceiptHandle,
-			})
-			if err != nil {
-				fmt.Println("Delete Error", err)
-				return
+			if del == true {
+				_, err := consumerSvc.DeleteMessage(&sqs.DeleteMessageInput{
+					QueueUrl:      &qURL,
+					ReceiptHandle: msg.ReceiptHandle,
+				})
+				if err != nil {
+					Log.Error("Delete Error", err)
+					return
+				}
+				Log.Info("Message Deleted")
 			}
-			fmt.Println("Message Deleted")
+			Log.Info("Message Received and sent to channel")
 			snd <- *parsed
 		}
 	}
@@ -52,8 +55,8 @@ func pull(qURL string, snd chan<- string, done chan bool) {
 
 }
 
-func Consume(pipe chan<- string, done chan bool, cfg config.Kulay) {
+func Get(pipe chan<- string, done chan bool, cfg config.Kulay) {
 	qURL := cfg.QueueUrl
-	fmt.Println("starting go Consume routine")
-	go pull(qURL, pipe, done)
+	del := cfg.Delete
+	go consume(qURL, pipe, done, del)
 }
