@@ -27,7 +27,9 @@ func produce(qURL string, rec <-chan string, done chan bool) {
 	done <- true
 }
 
-func Put(pipe <-chan string, done chan bool, cfg config.Kulay) {
-	qURL := cfg.QueueUrl
+func Put(pipe <-chan string, done chan bool, cfg interface{}) {
+	Log.Println("INTERFACE ", cfg)
+	sqsCfg := cfg.(config.SQSConf)
+	qURL := sqsCfg.QueueUrl
 	produce(qURL, pipe, done)
 }

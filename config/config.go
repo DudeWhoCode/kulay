@@ -2,18 +2,22 @@ package config
 
 import (
 	"github.com/spf13/viper"
+	. "naren/kulay/logger"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
-	. "naren/kulay/logger"
 )
 
-type Kulay struct {
+type SQSConf struct {
 	QueueUrl string
 	Region   string
 	Delete   bool
 	Service  string
+}
+
+type JsonlConf struct {
+	Path string
 }
 
 func viperCfg() {
@@ -31,31 +35,44 @@ func viperCfg() {
 }
 
 // Parse kulay config
-func Parse(section string) (KulayConf Kulay, err error) {
-	KulayConf = Kulay{}
-	err = viper.ReadInConfig()
+func Parse(service string, section string) ( interface{}, error) {
+	err := viper.ReadInConfig()
 	if err != nil {
 		switch err.(type) {
 		case viper.ConfigFileNotFoundError:
 			Log.Warn("Running without config file")
 		default:
-			return
+			return nil, err
 		}
 	}
-	subtree := "sqs." + section
-	subv := viper.Sub(subtree)
-	KulayConf.QueueUrl = subv.GetString("queue_url")
-	KulayConf.Region = subv.GetString("region")
-	KulayConf.Delete = subv.GetBool("delete_msg")
-	return
+	switch service {
+	case "sqs":
+		SQSCfg := SQSConf{}
+		subtree := "sqs." + section
+		subv := viper.Sub(subtree)
+		SQSCfg.QueueUrl = subv.GetString("queue_url")
+		SQSCfg.Region = subv.GetString("region")
+		SQSCfg.Delete = subv.GetBool("delete_msg")
+		return SQSCfg, err
+	case "jsonl":
+		JsonlCfg := JsonlConf{}
+		subtree := "jsonl." + section
+		subv := viper.Sub(subtree)
+		JsonlCfg.Path = subv.GetString("path")
+		return JsonlCfg, err
+	}
+	return nil, err
 }
 
 // Load configuration
-func Load(section string) Kulay {
+func Load(Flag string) (cfg interface{}) {
 	viperCfg()
-	cfg, err := Parse(section)
+	svc := strings.Split(Flag, ".")[0]
+	sec := strings.Split(Flag, ".")[1]
+	cfg, err := Parse(svc, sec)
+	Log.Println("config.go cfg value : ", cfg)
 	if err != nil {
 		panic(err)
 	}
-	return cfg
+	return
 }

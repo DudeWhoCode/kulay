@@ -55,8 +55,9 @@ func consume(qURL string, snd chan<- string, done chan bool, del bool) {
 
 }
 
-func Get(pipe chan<- string, done chan bool, cfg config.Kulay) {
-	qURL := cfg.QueueUrl
-	del := cfg.Delete
+func Get(pipe chan<- string, done chan bool, cfg interface{}) {
+	sqsCfg := cfg.(config.SQSConf)
+	qURL := sqsCfg.QueueUrl
+	del := sqsCfg.Delete
 	go consume(qURL, pipe, done, del)
 }
