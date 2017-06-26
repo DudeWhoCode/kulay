@@ -1,5 +1,5 @@
-hash: a12ea038b454a1b7c9d5160b62a0351db01ff02b4a5dc2f6da978fb822b4585b
-updated: 2017-06-21T09:22:45.109779104+05:30
+hash: a4e127939916d741d64224753a40216ec8cea3c242c5c8b6790bb324cb7b46f7
+updated: 2017-06-26T09:23:28.219512877+05:30
 imports:
 - name: github.com/aws/aws-sdk-go
   version: 96358b8282b1a3aa66836d2f2fe66216cc419668
@@ -54,7 +54,9 @@ imports:
 - name: github.com/pelletier/go-buffruneio
   version: c37440a7cf42ac63b919c752ca73a85067e05992
 - name: github.com/pelletier/go-toml
-  version: fe7536c3dee2596cdd23ee9976a17c22bdaae286
+  version: 4a000a21a414d139727f616a8bb97f847b1b310b
+- name: github.com/sirupsen/logrus
+  version: 202f25545ea4cf9b191ff7f846df5d87c9382c2b
 - name: github.com/spf13/afero
   version: 9be650865eab0c12963d8753212f4f9c66cdcf12
   subpackages:
@@ -62,7 +64,7 @@ imports:
 - name: github.com/spf13/cast
   version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 - name: github.com/spf13/cobra
-  version: 99b5d838ca16c25cc4944e323684f8415e8b10ba
+  version: 4d647c8944eb42504a714e57e97f244ed6344722
   subpackages:
   - cobra
 - name: github.com/spf13/jwalterweatherman
@@ -72,7 +74,7 @@ imports:
 - name: github.com/spf13/viper
   version: c1de95864d73a5465492829d7cb2dd422b19ac96
 - name: golang.org/x/sys
-  version: fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a
+  version: c23410a886927bab8ca5e80b08af6a56faeb330d
   subpackages:
   - unix
 - name: golang.org/x/text
