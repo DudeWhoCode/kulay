@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"naren/kulay/config"
-	ksqs "naren/kulay/sqs"
+	ksqs "naren/kulay/backend/sqs"
 	"os"
 	"strings"
 	. "naren/kulay/logger"
