@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"naren/kulay/config"
 	ksqs "naren/kulay/backend/sqs"
+	jsonl "naren/kulay/backend/fileio"
 	"os"
 	"strings"
 	. "naren/kulay/logger"
@@ -49,6 +50,7 @@ func initToSvc(svc string, cfg interface{}, pipe chan string, done chan bool) {
 		ksqs.Put(pipe, done, cfg)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
+		jsonl.Put(pipe, done, cfg)
 		os.Exit(1)
 	}
 }
