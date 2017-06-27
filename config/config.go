@@ -70,7 +70,6 @@ func Load(Flag string) (cfg interface{}) {
 	svc := strings.Split(Flag, ".")[0]
 	sec := strings.Split(Flag, ".")[1]
 	cfg, err := Parse(svc, sec)
-	Log.Println("config.go cfg value : ", cfg)
 	if err != nil {
 		panic(err)
 	}

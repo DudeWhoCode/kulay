@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"naren/kulay/config"
-	//ksqs "naren/kulay/backend/sqs"
+	ksqs "naren/kulay/backend/sqs"
 	"os"
 	"strings"
 	. "naren/kulay/logger"
@@ -38,7 +38,7 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string, done chan bool) 
 	switch svc {
 	case "sqs":
 		Log.Info("Initialized SQS consumer")
-		//ksqs.Get(pipe, done, cfg)
+		ksqs.Get(pipe, done, cfg)
 	}
 }
 
@@ -46,7 +46,7 @@ func initToSvc(svc string, cfg interface{}, pipe chan string, done chan bool) {
 	switch svc {
 	case "sqs":
 		Log.Info("Initialized SQS producer")
-		//ksqs.Put(pipe, done, cfg)
+		ksqs.Put(pipe, done, cfg)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
 		os.Exit(1)
