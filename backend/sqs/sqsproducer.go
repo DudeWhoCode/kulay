@@ -28,7 +28,6 @@ func produce(qURL string, rec <-chan string, done chan bool) {
 }
 
 func Put(pipe <-chan string, done chan bool, cfg interface{}) {
-	Log.Println("INTERFACE ", cfg)
 	sqsCfg := cfg.(config.SQSConf)
 	qURL := sqsCfg.QueueUrl
 	produce(qURL, pipe, done)
