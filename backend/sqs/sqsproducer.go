@@ -10,7 +10,7 @@ import (
 
 var producerSvc *sqs.SQS
 
-func produce(qURL string, rec <-chan string, done chan bool) {
+func produce(qURL string, rec <-chan string) {
 	sess := backend.NewAwsSession()
 	producerSvc = sqs.New(sess)
 	for msg := range rec {
@@ -25,11 +25,10 @@ func produce(qURL string, rec <-chan string, done chan bool) {
 		}
 		Log.Info("Sent message to SQS queue : ", *result.MessageId)
 	}
-	done <- true
 }
 
-func Put(pipe <-chan string, done chan bool, cfg interface{}) {
+func Put(pipe <-chan string, cfg interface{}) {
 	sqsCfg := cfg.(config.SQSConf)
 	qURL := sqsCfg.QueueUrl
-	produce(qURL, pipe, done)
+	produce(qURL, pipe)
 }

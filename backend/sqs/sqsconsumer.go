@@ -10,7 +10,7 @@ import (
 
 var consumerSvc *sqs.SQS
 
-func consume(qURL string, snd chan<- string, done chan bool, del bool) {
+func consume(qURL string, snd chan<- string, del bool) {
 	sess := backend.NewAwsSession()
 	consumerSvc = sqs.New(sess)
 	for {
@@ -52,13 +52,12 @@ func consume(qURL string, snd chan<- string, done chan bool, del bool) {
 			snd <- *parsed
 		}
 	}
-	done <- true
 
 }
 
-func Get(pipe chan<- string, done chan bool, cfg interface{}) {
+func Get(pipe chan<- string, cfg interface{}) {
 	sqsCfg := cfg.(config.SQSConf)
 	qURL := sqsCfg.QueueUrl
 	del := sqsCfg.Delete
-	go consume(qURL, pipe, done, del)
+	go consume(qURL, pipe, del)
 }

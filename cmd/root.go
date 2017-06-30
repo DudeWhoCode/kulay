@@ -39,7 +39,7 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string, done chan bool) 
 	switch svc {
 	case "sqs":
 		Log.Info("Initialized SQS consumer")
-		ksqs.Get(pipe, done, cfg)
+		ksqs.Get(pipe, cfg)
 	}
 }
 
@@ -47,12 +47,12 @@ func initToSvc(svc string, cfg interface{}, pipe chan string, done chan bool) {
 	switch svc {
 	case "sqs":
 		Log.Info("Initialized SQS producer")
-		ksqs.Put(pipe, done, cfg)
+		ksqs.Put(pipe, cfg)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
-		jsonl.Put(fPath, pipe, done)
+		jsonl.Put(fPath, pipe)
 		os.Exit(1)
 	}
 }
