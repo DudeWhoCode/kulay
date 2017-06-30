@@ -50,7 +50,9 @@ func initToSvc(svc string, cfg interface{}, pipe chan string, done chan bool) {
 		ksqs.Put(pipe, done, cfg)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
-		jsonl.Put(pipe, done, cfg)
+		cfg := cfg.(config.JsonlConf)
+		fPath := cfg.Path
+		jsonl.Put(fPath, pipe, done)
 		os.Exit(1)
 	}
 }
