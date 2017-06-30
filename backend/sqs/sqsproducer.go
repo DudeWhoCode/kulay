@@ -5,12 +5,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"naren/kulay/config"
 	. "naren/kulay/logger"
+	"naren/kulay/backend"
 )
 
 var producerSvc *sqs.SQS
 
 func produce(qURL string, rec <-chan string, done chan bool) {
-	sess := NewSession()
+	sess := backend.NewAwsSession()
 	producerSvc = sqs.New(sess)
 	for msg := range rec {
 		result, err := producerSvc.SendMessage(&sqs.SendMessageInput{

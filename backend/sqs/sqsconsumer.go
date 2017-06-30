@@ -5,12 +5,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"naren/kulay/config"
 	. "naren/kulay/logger"
+	"naren/kulay/backend"
 )
 
 var consumerSvc *sqs.SQS
 
 func consume(qURL string, snd chan<- string, done chan bool, del bool) {
-	sess := NewSession()
+	sess := backend.NewAwsSession()
 	consumerSvc = sqs.New(sess)
 	for {
 		result, err := consumerSvc.ReceiveMessage(&sqs.ReceiveMessageInput{
