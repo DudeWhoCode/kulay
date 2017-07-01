@@ -1,19 +1,37 @@
 package sqsapp
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
-	"naren/kulay/backend"
+	"github.com/aws/aws-sdk-go/aws"
 	. "naren/kulay/logger"
+	"naren/kulay/backend"
 )
 
-var consumerSvc *sqs.SQS
+var svc *sqs.SQS
+
+func Put(qURL string, rec <-chan string) {
+	sess := backend.NewAwsSession()
+	svc = sqs.New(sess)
+	for msg := range rec {
+		result, err := svc.SendMessage(&sqs.SendMessageInput{
+			DelaySeconds: aws.Int64(10),
+			MessageBody:  aws.String(msg),
+			QueueUrl:     &qURL,
+		})
+		if err != nil {
+			Log.Error("Error while sending message : ", err)
+			continue
+		}
+		Log.Info("Sent message to SQS queue : ", *result.MessageId)
+	}
+}
+
 
 func Get(qURL string, snd chan<- string, del bool) {
 	sess := backend.NewAwsSession()
-	consumerSvc = sqs.New(sess)
+	svc = sqs.New(sess)
 	for {
-		result, err := consumerSvc.ReceiveMessage(&sqs.ReceiveMessageInput{
+		result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 			AttributeNames: []*string{
 				aws.String(sqs.MessageSystemAttributeNameSentTimestamp),
 			},
@@ -37,7 +55,7 @@ func Get(qURL string, snd chan<- string, del bool) {
 		for _, msg := range result.Messages {
 			parsed := msg.Body
 			if del == true {
-				_, err := consumerSvc.DeleteMessage(&sqs.DeleteMessageInput{
+				_, err := svc.DeleteMessage(&sqs.DeleteMessageInput{
 					QueueUrl:      &qURL,
 					ReceiptHandle: msg.ReceiptHandle,
 				})
@@ -53,3 +71,5 @@ func Get(qURL string, snd chan<- string, del bool) {
 	}
 
 }
+
+
