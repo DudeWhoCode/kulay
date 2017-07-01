@@ -58,7 +58,6 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
 		jsonl.Put(fPath, pipe)
-		os.Exit(1)
 	}
 }
 
