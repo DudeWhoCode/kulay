@@ -3,14 +3,13 @@ package sqsapp
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
-	"naren/kulay/config"
-	. "naren/kulay/logger"
 	"naren/kulay/backend"
+	. "naren/kulay/logger"
 )
 
 var consumerSvc *sqs.SQS
 
-func consume(qURL string, snd chan<- string, del bool) {
+func Get(qURL string, snd chan<- string, del bool) {
 	sess := backend.NewAwsSession()
 	consumerSvc = sqs.New(sess)
 	for {
@@ -53,11 +52,4 @@ func consume(qURL string, snd chan<- string, del bool) {
 		}
 	}
 
-}
-
-func Get(pipe chan<- string, cfg interface{}) {
-	sqsCfg := cfg.(config.SQSConf)
-	qURL := sqsCfg.QueueUrl
-	del := sqsCfg.Delete
-	go consume(qURL, pipe, del)
 }

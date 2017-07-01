@@ -1,16 +1,15 @@
 package sqsapp
 
 import (
+	"naren/kulay/backend"
+	. "naren/kulay/logger"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
-	"naren/kulay/config"
-	. "naren/kulay/logger"
-	"naren/kulay/backend"
 )
 
 var producerSvc *sqs.SQS
 
-func produce(qURL string, rec <-chan string) {
+func Put(qURL string, rec <-chan string) {
 	sess := backend.NewAwsSession()
 	producerSvc = sqs.New(sess)
 	for msg := range rec {
@@ -25,10 +24,4 @@ func produce(qURL string, rec <-chan string) {
 		}
 		Log.Info("Sent message to SQS queue : ", *result.MessageId)
 	}
-}
-
-func Put(pipe <-chan string, cfg interface{}) {
-	sqsCfg := cfg.(config.SQSConf)
-	qURL := sqsCfg.QueueUrl
-	produce(qURL, pipe)
 }
