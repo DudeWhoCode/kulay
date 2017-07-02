@@ -1,0 +1,15 @@
+[sqs]
+    [sqs.us_queue]
+    queue_url = "https://sqs.us-east-1.amazonaws.com/123456789/test"
+    region = "us-east-1"
+    delete_msg = true
+
+    [sqs.sg_queue]
+    queue_url = "https://sqs.ap-southeast-1.amazonaws.com/123456789/test"
+    region = "ap-southeast-1"
+
+[jsonl]
+    [jsonl.sg_backup]
+    path = "/tmp/apse1_backup.jsonl"
+    rotate = true
+    batch = 100
