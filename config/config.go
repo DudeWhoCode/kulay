@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/spf13/viper"
-	. "naren/kulay/logger"
+	. "github.com/DudeWhoCode/kulay/logger"
 	"os"
 	"path"
 	"path/filepath"

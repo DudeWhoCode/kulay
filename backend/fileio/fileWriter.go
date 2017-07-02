@@ -1,7 +1,7 @@
 package fileio
 
 import (
-	. "naren/kulay/logger"
+	. "github.com/DudeWhoCode/kulay/logger"
 	"os"
 )
 

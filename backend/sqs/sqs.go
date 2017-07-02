@@ -3,8 +3,8 @@ package sqsapp
 import (
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/aws/aws-sdk-go/aws"
-	. "naren/kulay/logger"
-	"naren/kulay/backend"
+	. "github.com/DudeWhoCode/kulay/logger"
+	"github.com/DudeWhoCode/kulay/backend"
 )
 
 var svc *sqs.SQS

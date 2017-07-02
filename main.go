@@ -1,8 +1,8 @@
 package main
 
 import (
-	"naren/kulay/cmd"
-	. "naren/kulay/logger"
+	"github.com/DudeWhoCode/kulay/cmd"
+	. "github.com/DudeWhoCode/kulay/logger"
 )
 
 func main() {

@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"naren/kulay/config"
-	ksqs "naren/kulay/backend/sqs"
-	jsonl "naren/kulay/backend/fileio"
+	"github.com/DudeWhoCode/kulay/config"
+	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
+	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
 	"os"
 	"strings"
-	. "naren/kulay/logger"
+	. "github.com/DudeWhoCode/kulay/logger"
 )
 
 var FromFlag string
