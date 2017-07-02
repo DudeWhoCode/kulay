@@ -37,14 +37,14 @@ func TestParse(t *testing.T) {
 	} else if receivedRegion != expectedRegion{
 		t.Errorf("expected region: %s, got: %s", expectedRegion, receivedRegion)
 	} else if receivedDel != expectedDel{
-		t.Errorf("expected region: %t, got: %t", expectedDel, receivedDel)
+		t.Errorf("expected delete flag: %t, got: %t", expectedDel, receivedDel)
 	}
 
 	svc = "sqs"
 	sec = "sg_queue"
 	expectedUrl = "https://sqs.ap-southeast-1.amazonaws.com/123456789/test"
 	expectedRegion = "ap-southeast-1"
-	expectedDel = true
+	expectedDel = false
 	viperCfg()
 	cfg, err = Parse(svc, sec)
 	if err != nil {
@@ -59,7 +59,7 @@ func TestParse(t *testing.T) {
 	} else if receivedRegion != expectedRegion{
 		t.Errorf("expected region: %s, got: %s", expectedRegion, receivedRegion)
 	} else if receivedDel != expectedDel{
-		t.Errorf("expected region: %t, got: %t", expectedDel, receivedDel)
+		t.Errorf("expected delete flag: %t, got: %t", expectedDel, receivedDel)
 	}
 
 }
