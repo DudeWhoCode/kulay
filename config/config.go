@@ -31,7 +31,6 @@ func viperCfg() {
 	viper.AddConfigPath(dir)
 	viper.SetConfigName(file)
 	viper.SetConfigType("toml")
-	viper.SetDefault("sqs.delete", true)
 }
 
 // Parse kulay config
