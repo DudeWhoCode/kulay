@@ -43,6 +43,7 @@ func Get(qURL string, region string, del bool, snd chan<- string) {
 			VisibilityTimeout:   aws.Int64(30),
 			WaitTimeSeconds:     aws.Int64(20),
 		})
+		Log.Info("Got 10 msgs from sqs")
 		if err != nil {
 			Log.Error("Error", err)
 			return
@@ -68,7 +69,9 @@ func Get(qURL string, region string, del bool, snd chan<- string) {
 			Log.Info("Message Received and sent to channel")
 			snd <- *parsed
 		}
+		Log.Info("EXITED FOR LOOP")
 	}
+	Log.Info("EXITED FOREVER LOOP")
 
 }
 
