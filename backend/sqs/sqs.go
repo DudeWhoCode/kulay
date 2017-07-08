@@ -7,11 +7,10 @@ import (
 	"github.com/DudeWhoCode/kulay/backend"
 )
 
-var svc *sqs.SQS
 
 func Put(qURL string, region string, rec <-chan string) {
 	sess := backend.NewAwsSession(region)
-	svc = sqs.New(sess)
+	svc := sqs.New(sess)
 	for msg := range rec {
 		result, err := svc.SendMessage(&sqs.SendMessageInput{
 			DelaySeconds: aws.Int64(10),
@@ -29,7 +28,7 @@ func Put(qURL string, region string, rec <-chan string) {
 
 func Get(qURL string, region string, del bool, snd chan<- string) {
 	sess := backend.NewAwsSession(region)
-	svc = sqs.New(sess)
+	svc := sqs.New(sess)
 	for {
 		result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 			AttributeNames: []*string{
