@@ -72,7 +72,7 @@ func kulayApp() {
 	ToSvc := strings.Split(ToFlag, ".")[0]
 	FromConfig := config.Load(FromFlag)
 	ToConfig := config.Load(ToFlag)
-	pipe := make(chan string, 20)
+	pipe := make(chan string, 100)
 	done := make(chan bool)
 	initFromSvc(FromSvc, FromConfig, pipe)
 	initToSvc(ToSvc, ToConfig, pipe)
