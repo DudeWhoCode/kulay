@@ -43,7 +43,7 @@ func TestGet(t *testing.T){
 		}
 	}
 	if len(testResults) != testCnt{
-		t.Errorf("Expected consumed message count is 50, got %v",10)
+		t.Errorf("Expected consumed message count is 50, got %v",testResults)
 	}
 	t.Logf("Unpacked %v messages from consumer channel", len(testResults))
 
