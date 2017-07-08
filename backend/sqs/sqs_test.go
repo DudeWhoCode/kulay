@@ -7,6 +7,7 @@ import (
 
 func TestGet(t *testing.T){
 	testCnt := 50
+	region := "ap-southeast-1"
 	type test struct {
 		Name  string `json:"name"`
 		Desc  string `json:"desc"`
@@ -28,9 +29,9 @@ func TestGet(t *testing.T){
 	}
 	t.Logf("Sent %v messages to producer channel for testing", len(producerPipe))
 	close(producerPipe)
-	Put(qURL, producerPipe)
+	Put(qURL, region, producerPipe)
 	consumerPipe := make(chan string, testCnt)
-	Get(qURL, consumerPipe, true)
+	Get(qURL, region, true, consumerPipe)
 	t.Logf("Received %v messages from SQS to consumer channel", len(consumerPipe))
 	close(consumerPipe)
 	for msg := range consumerPipe {
