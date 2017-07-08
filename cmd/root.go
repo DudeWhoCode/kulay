@@ -42,7 +42,8 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		sqsCfg := cfg.(config.SQSConf)
 		qURL := sqsCfg.QueueUrl
 		del := sqsCfg.Delete
-		go ksqs.Get(qURL, pipe, del)
+		region := sqsCfg.Region
+		go ksqs.Get(qURL, region, del, pipe)
 	}
 }
 
@@ -52,7 +53,8 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		Log.Info("Initialized SQS producer")
 		sqsCfg := cfg.(config.SQSConf)
 		qURL := sqsCfg.QueueUrl
-		go ksqs.Put(qURL, pipe)
+		region := sqsCfg.Region
+		go ksqs.Put(qURL, region, pipe)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
@@ -70,7 +72,7 @@ func kulayApp() {
 	ToSvc := strings.Split(ToFlag, ".")[0]
 	FromConfig := config.Load(FromFlag)
 	ToConfig := config.Load(ToFlag)
-	pipe := make(chan string, 20)
+	pipe := make(chan string, 100)
 	done := make(chan bool)
 	initFromSvc(FromSvc, FromConfig, pipe)
 	initToSvc(ToSvc, ToConfig, pipe)
