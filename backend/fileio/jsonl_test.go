@@ -43,3 +43,35 @@ func TestPut(t *testing.T) {
 		t.Errorf("Expected no errors in scanning file, got %v", err)
 	}
 }
+
+func TestGet(t *testing.T) {
+	fpath := "/tmp/test_get.jsonl"
+	testCnt := 10
+	pipe := make(chan string, testCnt)
+	type test struct {
+		Name  string `json:"name"`
+		Desc  string `json:"desc"`
+		Url   string `json:"url"`
+		Stars int    `json:"stars"`
+	}
+	testData := &test{
+		"kulay",
+		"High speed message routing between services",
+		"https://github.com/kulay",
+		135,
+	}
+	testMsg, _ := json.Marshal(testData)
+	testMsg = append(testMsg, "\n"...)
+	toWrite, err := os.Create(fpath)
+	if err != nil {
+		t.Fatal("Unable to open file for writing jsonl")
+	}
+	for i := 1; i <= testCnt; i++ {
+		toWrite.Write(testMsg)
+	}
+	toWrite.Close()
+	Get(fpath, pipe)
+	if len(pipe) != testCnt {
+		t.Errorf("Expected message count is %v, got %v", testCnt, len(pipe))
+	}
+}
