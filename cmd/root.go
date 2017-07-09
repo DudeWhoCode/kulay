@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/DudeWhoCode/kulay/config"
-	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
 	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
+	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
+	"github.com/DudeWhoCode/kulay/config"
+	. "github.com/DudeWhoCode/kulay/logger"
+	"github.com/spf13/cobra"
 	"os"
 	"strings"
-	. "github.com/DudeWhoCode/kulay/logger"
 )
 
 var FromFlag string
@@ -44,6 +44,11 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		del := sqsCfg.Delete
 		region := sqsCfg.Region
 		go ksqs.Get(qURL, region, del, pipe)
+	case "jsonl":
+		Log.Info("Initialized jsonl consumer")
+		cfg := cfg.(config.JsonlConf)
+		fPath := cfg.Path
+		go jsonl.Get(fPath, pipe)
 	}
 }
 
@@ -59,7 +64,7 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
-		jsonl.Put(fPath, pipe)
+		go jsonl.Put(fPath, pipe)
 	}
 }
 
