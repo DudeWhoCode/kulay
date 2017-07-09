@@ -8,7 +8,7 @@ import (
 )
 
 func TestPut(t *testing.T) {
-	fpath := "/tmp/logs_bkp.jsonl"
+	fpath := "/tmp/test_put.jsonl"
 	pipe := make(chan string)
 	type test struct {
 		Name  string `json:"name"`
