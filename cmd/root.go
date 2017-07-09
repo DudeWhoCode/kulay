@@ -44,6 +44,11 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		del := sqsCfg.Delete
 		region := sqsCfg.Region
 		go ksqs.Get(qURL, region, del, pipe)
+	case "jsonl":
+		Log.Info("Initialized jsonl consumer")
+		cfg := cfg.(config.JsonlConf)
+		fPath := cfg.Path
+		go jsonl.Get(fPath, pipe)
 	}
 }
 
@@ -59,7 +64,7 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
-		jsonl.Put(fPath, pipe)
+		go jsonl.Put(fPath, pipe)
 	}
 }
 
