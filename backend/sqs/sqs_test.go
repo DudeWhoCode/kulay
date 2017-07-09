@@ -82,7 +82,7 @@ func TestRegions(t *testing.T){
 	close(consumerPipe)
 	Put(destqURL, destRegion, consumerPipe)
 	resultPipe := make(chan string, testCnt)
-	Get(destqURL, destRegion, false, resultPipe)
+	Get(destqURL, destRegion, true, resultPipe)
 	if len(resultPipe) != testCnt{
 		t.Errorf("Expected consumed message count is %v, got %v",testCnt, testResults)
 	}
