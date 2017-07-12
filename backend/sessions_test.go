@@ -20,7 +20,6 @@ func TestNewAwsSession(t *testing.T) {
 	}()
 }
 
-
 func TestNewRedisSession(t *testing.T) {
 	host := "localhost"
 	port := "6379"
