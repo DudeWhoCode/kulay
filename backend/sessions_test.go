@@ -19,3 +19,16 @@ func TestNewAwsSession(t *testing.T) {
 		}
 	}()
 }
+
+
+func TestNewRedisSession(t *testing.T) {
+	host := "localhost"
+	port := "6379"
+	pass := ""
+	db := 0
+	client := NewRedisSession(host, port, pass, db)
+	if pong, err := client.Ping().Result(); pong != "PONG" {
+		t.Errorf("Expected PONG, got %v", pong)
+		t.Errorf("Expected no errors, got %s", err)
+	}
+}
