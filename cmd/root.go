@@ -3,6 +3,7 @@ package cmd
 import (
 	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
 	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
+	redisq "github.com/DudeWhoCode/kulay/backend/redisq"
 	"github.com/DudeWhoCode/kulay/config"
 	. "github.com/DudeWhoCode/kulay/logger"
 	"github.com/spf13/cobra"
@@ -65,6 +66,15 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
 		go jsonl.Put(fPath, pipe)
+	case "redisq":
+		Log.Info("Initialized redis producer")
+		cfg := cfg.(config.RedisqConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Queue
+		go redisq.Put(host, port, pass, db, queue, pipe)
 	}
 }
 
