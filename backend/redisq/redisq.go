@@ -9,7 +9,6 @@ import (
 
 func Put(host string, port string, pass string, db int, queue string, rec <-chan string) {
 	client := backend.NewRedisSession(host, port, pass, db)
-	Log.Info("Created redis client")
 	for msg := range rec {
 		if err := client.RPush(queue, msg).Err(); err != nil {
 			Log.Warn(err)
@@ -20,7 +19,6 @@ func Put(host string, port string, pass string, db int, queue string, rec <-chan
 
 func Get(host string, port string, pass string, db int, queue string, rec chan<- string) {
 	client := backend.NewRedisSession(host, port, pass, db)
-	Log.Info("Created redis client")
 	// use `client.BLPop(0, "queue")` for infinite waiting time
 	for {
 		result, err := client.BLPop(1*time.Second, queue).Result()
