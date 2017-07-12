@@ -2,8 +2,8 @@ package cmd
 
 import (
 	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
-	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
 	redisq "github.com/DudeWhoCode/kulay/backend/redisq"
+	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
 	"github.com/DudeWhoCode/kulay/config"
 	. "github.com/DudeWhoCode/kulay/logger"
 	"github.com/spf13/cobra"
