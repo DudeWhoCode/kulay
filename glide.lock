@@ -1,5 +1,5 @@
-hash: a4e127939916d741d64224753a40216ec8cea3c242c5c8b6790bb324cb7b46f7
-updated: 2017-06-26T09:23:28.219512877+05:30
+hash: c82f27dadb9315d86f8e5aafc810faee2ae64388d36717e96d8647a727367927
+updated: 2017-07-09T19:22:22.219560501+05:30
 imports:
 - name: github.com/aws/aws-sdk-go
   version: 96358b8282b1a3aa66836d2f2fe66216cc419668
@@ -31,7 +31,9 @@ imports:
 - name: github.com/fsnotify/fsnotify
   version: 629574ca2a5df945712d3079857300b5e4da0236
 - name: github.com/go-ini/ini
-  version: d3de07a94d22b4a0972deb4b96d790c2c0ce8333
+  version: 3d73f4b845efdf9989fffd4b4e562727744a34ba
+- name: github.com/go-redis/redis
+  version: 564772f045d89bd55843d7dc8042e0a599401e09
 - name: github.com/hashicorp/hcl
   version: 392dba7d905ed5d04a5794ba89f558b27e2ba1ca
   subpackages:
@@ -51,10 +53,8 @@ imports:
   version: 51463bfca2576e06c62a8504b5c0f06d61312647
 - name: github.com/mitchellh/mapstructure
   version: d0303fe809921458f417bcf828397a65db30a7e4
-- name: github.com/pelletier/go-buffruneio
-  version: c37440a7cf42ac63b919c752ca73a85067e05992
 - name: github.com/pelletier/go-toml
-  version: 4a000a21a414d139727f616a8bb97f847b1b310b
+  version: 69d355db5304c0f7f809a2edc054553e7142f016
 - name: github.com/sirupsen/logrus
   version: 202f25545ea4cf9b191ff7f846df5d87c9382c2b
 - name: github.com/spf13/afero
@@ -64,7 +64,7 @@ imports:
 - name: github.com/spf13/cast
   version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 - name: github.com/spf13/cobra
-  version: 4d647c8944eb42504a714e57e97f244ed6344722
+  version: 8c6fa02d2225de0f9bdcb7ca912556f68d172d8c
   subpackages:
   - cobra
 - name: github.com/spf13/jwalterweatherman
@@ -74,11 +74,11 @@ imports:
 - name: github.com/spf13/viper
   version: c1de95864d73a5465492829d7cb2dd422b19ac96
 - name: golang.org/x/sys
-  version: c23410a886927bab8ca5e80b08af6a56faeb330d
+  version: 739734461d1c916b6c72a63d7efda2b27edb369f
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: 4e9ab9ee170f2a39bd66c92b3e0a47ff47a4bc77
+  version: cfdf022e86b4ecfb646e1efbd7db175dd623a8fa
   subpackages:
   - transform
   - unicode/norm

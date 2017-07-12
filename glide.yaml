@@ -11,3 +11,5 @@ import:
   version: ~1.4.2
 - package: github.com/sirupsen/logrus
   version: ~1.0.0
+- package: github.com/go-redis/redis
+  version: ~6.5.2
