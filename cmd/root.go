@@ -1,13 +1,14 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/DudeWhoCode/kulay/config"
-	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
 	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
+	redisq "github.com/DudeWhoCode/kulay/backend/redisq"
+	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
+	"github.com/DudeWhoCode/kulay/config"
+	. "github.com/DudeWhoCode/kulay/logger"
+	"github.com/spf13/cobra"
 	"os"
 	"strings"
-	. "github.com/DudeWhoCode/kulay/logger"
 )
 
 var FromFlag string
@@ -42,7 +43,22 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		sqsCfg := cfg.(config.SQSConf)
 		qURL := sqsCfg.QueueUrl
 		del := sqsCfg.Delete
-		go ksqs.Get(qURL, pipe, del)
+		region := sqsCfg.Region
+		go ksqs.Get(qURL, region, del, pipe)
+	case "jsonl":
+		Log.Info("Initialized jsonl consumer")
+		cfg := cfg.(config.JsonlConf)
+		fPath := cfg.Path
+		go jsonl.Get(fPath, pipe)
+	case "redisq":
+		Log.Info("Initialized redis consumer")
+		cfg := cfg.(config.RedisqConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Queue
+		go redisq.Get(host, port, pass, db, queue, pipe)
 	}
 }
 
@@ -52,12 +68,22 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		Log.Info("Initialized SQS producer")
 		sqsCfg := cfg.(config.SQSConf)
 		qURL := sqsCfg.QueueUrl
-		go ksqs.Put(qURL, pipe)
+		region := sqsCfg.Region
+		go ksqs.Put(qURL, region, pipe)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
-		jsonl.Put(fPath, pipe)
+		go jsonl.Put(fPath, pipe)
+	case "redisq":
+		Log.Info("Initialized redis producer")
+		cfg := cfg.(config.RedisqConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Queue
+		go redisq.Put(host, port, pass, db, queue, pipe)
 	}
 }
 
@@ -70,7 +96,7 @@ func kulayApp() {
 	ToSvc := strings.Split(ToFlag, ".")[0]
 	FromConfig := config.Load(FromFlag)
 	ToConfig := config.Load(ToFlag)
-	pipe := make(chan string, 20)
+	pipe := make(chan string, 100)
 	done := make(chan bool)
 	initFromSvc(FromSvc, FromConfig, pipe)
 	initToSvc(ToSvc, ToConfig, pipe)

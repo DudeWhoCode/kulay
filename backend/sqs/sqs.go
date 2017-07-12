@@ -1,17 +1,15 @@
 package sqsapp
 
 import (
-	"github.com/aws/aws-sdk-go/service/sqs"
-	"github.com/aws/aws-sdk-go/aws"
-	. "github.com/DudeWhoCode/kulay/logger"
 	"github.com/DudeWhoCode/kulay/backend"
+	. "github.com/DudeWhoCode/kulay/logger"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/sqs"
 )
 
-var svc *sqs.SQS
-
-func Put(qURL string, rec <-chan string) {
-	sess := backend.NewAwsSession()
-	svc = sqs.New(sess)
+func Put(qURL string, region string, rec <-chan string) {
+	sess := backend.NewAwsSession(region)
+	svc := sqs.New(sess)
 	for msg := range rec {
 		result, err := svc.SendMessage(&sqs.SendMessageInput{
 			DelaySeconds: aws.Int64(10),
@@ -26,10 +24,9 @@ func Put(qURL string, rec <-chan string) {
 	}
 }
 
-
-func Get(qURL string, snd chan<- string, del bool) {
-	sess := backend.NewAwsSession()
-	svc = sqs.New(sess)
+func Get(qURL string, region string, del bool, snd chan<- string) {
+	sess := backend.NewAwsSession(region)
+	svc := sqs.New(sess)
 	for {
 		result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 			AttributeNames: []*string{
@@ -71,5 +68,3 @@ func Get(qURL string, snd chan<- string, del bool) {
 	}
 
 }
-
-

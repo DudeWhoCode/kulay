@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/spf13/viper"
 	. "github.com/DudeWhoCode/kulay/logger"
+	"github.com/spf13/viper"
 	"os"
 	"path"
 	"path/filepath"
@@ -20,6 +20,14 @@ type JsonlConf struct {
 	Path string
 }
 
+type RedisqConf struct {
+	Host  string
+	Port  string
+	Pass  string
+	DB    int
+	Queue string
+}
+
 func viperCfg() {
 	filePath := os.Getenv("KULAY_CONF")
 	dir, file := path.Split(filePath)
@@ -34,7 +42,7 @@ func viperCfg() {
 }
 
 // Parse kulay config
-func Parse(service string, section string) ( interface{}, error) {
+func Parse(service string, section string) (interface{}, error) {
 	err := viper.ReadInConfig()
 	if err != nil {
 		switch err.(type) {
@@ -59,6 +67,16 @@ func Parse(service string, section string) ( interface{}, error) {
 		subv := viper.Sub(subtree)
 		JsonlCfg.Path = subv.GetString("path")
 		return JsonlCfg, err
+	case "redisq":
+		RedisqCfg := RedisqConf{}
+		subtree := "redisq." + section
+		subv := viper.Sub(subtree)
+		RedisqCfg.Host = subv.GetString("host")
+		RedisqCfg.Port = subv.GetString("port")
+		RedisqCfg.Pass = subv.GetString("password")
+		RedisqCfg.DB = subv.GetInt("database")
+		RedisqCfg.Queue = subv.GetString("queue")
+		return RedisqCfg, err
 	}
 	return nil, err
 }
