@@ -50,6 +50,15 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
 		go jsonl.Get(fPath, pipe)
+	case "redisq":
+		Log.Info("Initialized redis consumer")
+		cfg := cfg.(config.RedisqConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Queue
+		go redisq.Get(host, port, pass, db, queue, pipe)
 	}
 }
 
