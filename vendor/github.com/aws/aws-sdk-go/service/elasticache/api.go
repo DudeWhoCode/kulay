@@ -4906,7 +4906,7 @@ type CacheCluster struct {
 	// Example: mem-3.9dvc4r.cfg.usw2.cache.amazonaws.com:11211
 	ConfigurationEndpoint *Endpoint `type:"structure"`
 
-	// The name of the cache engine (memcached or redis) to be used for this cache
+	// The name of the cache engine (memcached or redisq) to be used for this cache
 	// cluster.
 	Engine *string `type:"string"`
 
@@ -5923,7 +5923,7 @@ type CreateCacheClusterInput struct {
 
 	// The name of the cache engine to be used for this cache cluster.
 	//
-	// Valid values for this parameter are: memcached | redis
+	// Valid values for this parameter are: memcached | redisq
 	Engine *string `type:"string"`
 
 	// The version number of the cache engine to be used for this cache cluster.
@@ -6023,7 +6023,7 @@ type CreateCacheClusterInput struct {
 	// Zone is not specified, the cache cluster is created in Availability Zones
 	// that provide the best spread of read replicas across Availability Zones.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	ReplicationGroupId *string `type:"string"`
 
 	// One or more VPC security groups associated with the cache cluster.
@@ -6037,7 +6037,7 @@ type CreateCacheClusterInput struct {
 	// file is used to populate the node group (shard). The Amazon S3 object name
 	// in the ARN cannot contain any commas.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	//
 	// Example of an Amazon S3 ARN: arn:aws:s3:::my_bucket/snapshot1.rdb
 	SnapshotArns []*string `locationNameList:"SnapshotArn" type:"list"`
@@ -6046,14 +6046,14 @@ type CreateCacheClusterInput struct {
 	// group (shard). The snapshot status changes to restoring while the new node
 	// group (shard) is being created.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	SnapshotName *string `type:"string"`
 
 	// The number of days for which ElastiCache retains automatic snapshots before
 	// deleting them. For example, if you set SnapshotRetentionLimit to 5, a snapshot
 	// taken today is retained for 5 days before being deleted.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	//
 	// Default: 0 (i.e., automatic backups are disabled for this cache cluster).
 	SnapshotRetentionLimit *int64 `type:"integer"`
@@ -6066,7 +6066,7 @@ type CreateCacheClusterInput struct {
 	// If you do not specify this parameter, ElastiCache automatically chooses an
 	// appropriate time range.
 	//
-	// Note: This parameter is only valid if the Engine parameter is redis.
+	// Note: This parameter is only valid if the Engine parameter is redisq.
 	SnapshotWindow *string `type:"string"`
 
 	// A list of cost allocation tags to be added to this resource. A tag is a key-value
@@ -6792,7 +6792,7 @@ type CreateReplicationGroupInput struct {
 	// of node groups configured by NodeGroupConfiguration regardless of the number
 	// of ARNs specified here.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	//
 	// Example of an Amazon S3 ARN: arn:aws:s3:::my_bucket/snapshot1.rdb
 	SnapshotArns []*string `locationNameList:"SnapshotArn" type:"list"`
@@ -6801,14 +6801,14 @@ type CreateReplicationGroupInput struct {
 	// group. The snapshot status changes to restoring while the new replication
 	// group is being created.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	SnapshotName *string `type:"string"`
 
 	// The number of days for which ElastiCache retains automatic snapshots before
 	// deleting them. For example, if you set SnapshotRetentionLimit to 5, a snapshot
 	// that was taken today is retained for 5 days before being deleted.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	//
 	// Default: 0 (i.e., automatic backups are disabled for this cache cluster).
 	SnapshotRetentionLimit *int64 `type:"integer"`
@@ -6821,7 +6821,7 @@ type CreateReplicationGroupInput struct {
 	// If you do not specify this parameter, ElastiCache automatically chooses an
 	// appropriate time range.
 	//
-	// This parameter is only valid if the Engine parameter is redis.
+	// This parameter is only valid if the Engine parameter is redisq.
 	SnapshotWindow *string `type:"string"`
 
 	// A list of cost allocation tags to be added to this resource. A tag is a key-value
@@ -7651,7 +7651,7 @@ type DescribeCacheEngineVersionsInput struct {
 	// or engine and major version combination is to be returned.
 	DefaultOnly *bool `type:"boolean"`
 
-	// The cache engine to return. Valid values: memcached | redis
+	// The cache engine to return. Valid values: memcached | redisq
 	Engine *string `type:"string"`
 
 	// The cache engine version to return.
@@ -10910,7 +10910,7 @@ type ReplicationGroup struct {
 	// If you do not specify this parameter, ElastiCache automatically chooses an
 	// appropriate time range.
 	//
-	// Note: This parameter is only valid if the Engine parameter is redis.
+	// Note: This parameter is only valid if the Engine parameter is redisq.
 	SnapshotWindow *string `type:"string"`
 
 	// The cache cluster ID that is used as the daily snapshot source for the replication
@@ -11613,7 +11613,7 @@ type Snapshot struct {
 	// The name of the cache subnet group associated with the source cache cluster.
 	CacheSubnetGroupName *string `type:"string"`
 
-	// The name of the cache engine (memcached or redis) used by the source cache
+	// The name of the cache engine (memcached or redisq) used by the source cache
 	// cluster.
 	Engine *string `type:"string"`
 

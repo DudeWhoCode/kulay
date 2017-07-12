@@ -221,10 +221,10 @@ func ExampleElastiCache_CreateCacheCluster_shared01() {
 	svc := elasticache.New(session.New())
 	input := &elasticache.CreateCacheClusterInput{
 		AutoMinorVersionUpgrade: aws.Bool(true),
-		CacheClusterId:          aws.String("my-redis"),
+		CacheClusterId:          aws.String("my-redisq"),
 		CacheNodeType:           aws.String("cache.r3.larage"),
 		CacheSubnetGroupName:    aws.String("default"),
-		Engine:                  aws.String("redis"),
+		Engine:                  aws.String("redisq"),
 		EngineVersion:           aws.String("3.2.4"),
 		NumCacheNodes:           aws.Int64(1),
 		Port:                    aws.Int64(6379),
@@ -403,11 +403,11 @@ func ExampleElastiCache_CreateReplicationGroup_shared00() {
 	input := &elasticache.CreateReplicationGroupInput{
 		AutomaticFailoverEnabled:    aws.Bool(true),
 		CacheNodeType:               aws.String("cache.m3.medium"),
-		Engine:                      aws.String("redis"),
+		Engine:                      aws.String("redisq"),
 		EngineVersion:               aws.String("2.8.24"),
 		NumCacheClusters:            aws.Int64(3),
 		ReplicationGroupDescription: aws.String("A Redis replication group."),
-		ReplicationGroupId:          aws.String("my-redis-rg"),
+		ReplicationGroupId:          aws.String("my-redisq-rg"),
 		SnapshotRetentionLimit:      aws.Int64(30),
 	}
 
@@ -469,7 +469,7 @@ func ExampleElastiCache_CreateReplicationGroup_shared01() {
 		AutoMinorVersionUpgrade: aws.Bool(true),
 		CacheNodeType:           aws.String("cache.m3.medium"),
 		CacheParameterGroupName: aws.String("default.redis3.2.cluster.on"),
-		Engine:                  aws.String("redis"),
+		Engine:                  aws.String("redisq"),
 		EngineVersion:           aws.String("3.2.4"),
 		NodeGroupConfiguration: []*elasticache.NodeGroupConfiguration{
 			{
@@ -492,7 +492,7 @@ func ExampleElastiCache_CreateReplicationGroup_shared01() {
 		},
 		NumNodeGroups:               aws.Int64(2),
 		ReplicationGroupDescription: aws.String("A multi-sharded replication group"),
-		ReplicationGroupId:          aws.String("clustered-redis-rg"),
+		ReplicationGroupId:          aws.String("clustered-redisq-rg"),
 		SnapshotRetentionLimit:      aws.Int64(8),
 	}
 
@@ -828,11 +828,11 @@ func ExampleElastiCache_DeleteCacheSubnetGroup_shared00() {
 
 // DeleteReplicationGroup
 //
-// Deletes the Amazon ElastiCache replication group my-redis-rg.
+// Deletes the Amazon ElastiCache replication group my-redisq-rg.
 func ExampleElastiCache_DeleteReplicationGroup_shared00() {
 	svc := elasticache.New(session.New())
 	input := &elasticache.DeleteReplicationGroupInput{
-		ReplicationGroupId:   aws.String("my-redis-rg"),
+		ReplicationGroupId:   aws.String("my-redisq-rg"),
 		RetainPrimaryCluster: aws.Bool(false),
 	}
 
@@ -1002,7 +1002,7 @@ func ExampleElastiCache_DescribeCacheEngineVersions_shared01() {
 	svc := elasticache.New(session.New())
 	input := &elasticache.DescribeCacheEngineVersionsInput{
 		DefaultOnly: aws.Bool(false),
-		Engine:      aws.String("redis"),
+		Engine:      aws.String("redisq"),
 		MaxRecords:  aws.Int64(50),
 	}
 
@@ -1577,7 +1577,7 @@ func ExampleElastiCache_ModifyCacheCluster_shared00() {
 	svc := elasticache.New(session.New())
 	input := &elasticache.ModifyCacheClusterInput{
 		ApplyImmediately:       aws.Bool(true),
-		CacheClusterId:         aws.String("redis-cluster"),
+		CacheClusterId:         aws.String("redisq-cluster"),
 		SnapshotRetentionLimit: aws.Int64(14),
 	}
 
@@ -1713,9 +1713,9 @@ func ExampleElastiCache_ModifyReplicationGroup_shared00() {
 	input := &elasticache.ModifyReplicationGroupInput{
 		ApplyImmediately:            aws.Bool(true),
 		ReplicationGroupDescription: aws.String("Modified replication group"),
-		ReplicationGroupId:          aws.String("my-redis-rg"),
+		ReplicationGroupId:          aws.String("my-redisq-rg"),
 		SnapshotRetentionLimit:      aws.Int64(30),
-		SnapshottingClusterId:       aws.String("my-redis-rg-001"),
+		SnapshottingClusterId:       aws.String("my-redisq-rg-001"),
 	}
 
 	result, err := svc.ModifyReplicationGroup(input)
