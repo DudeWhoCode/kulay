@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/aws"
 	"os"
+	"github.com/go-redis/redis"
 )
 
 func NewAwsSession(region string) *session.Session {
@@ -12,4 +13,14 @@ func NewAwsSession(region string) *session.Session {
 		Region: aws.String(region),
 	}))
 	return sess
+}
+
+
+func NewRedisSession(host string, port string, pass string, db int) *redis.Client {
+	addr := host + ":" + port
+	return redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: pass, // "" for no password
+		DB:       db,  // default DB : 0
+	})
 }
