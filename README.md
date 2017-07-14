@@ -3,6 +3,8 @@
 
 An high speed message passing system between various queues and services.
 
+<a href="https://asciinema.org/a/IrbTcz6eO0IoBhZ196t4rdz6Y" target="_blank"><img src="https://asciinema.org/a/IrbTcz6eO0IoBhZ196t4rdz6Y.png" /></a>
+
 ## Getting started
 * Download the [latest binary](https://github.com/DudeWhoCode/kulay/releases/tag/v0.1.1) and add its location to your `PATH`
 * Create a config file, kulay.toml and copy the following contents to it.
