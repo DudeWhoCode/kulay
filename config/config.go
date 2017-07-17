@@ -28,6 +28,14 @@ type RedisqConf struct {
 	Queue string
 }
 
+type RedisPubsubConf struct {
+	Host    string
+	Port    string
+	Pass    string
+	DB      int
+	Channel string
+}
+
 func viperCfg() {
 	filePath := os.Getenv("KULAY_CONF")
 	dir, file := path.Split(filePath)
@@ -77,6 +85,16 @@ func Parse(service string, section string) (interface{}, error) {
 		RedisqCfg.DB = subv.GetInt("database")
 		RedisqCfg.Queue = subv.GetString("queue")
 		return RedisqCfg, err
+	case "redispubsub":
+		RedisPubSubCfg := RedisPubsubConf{}
+		subtree := "redispubsub." + section
+		subv := viper.Sub(subtree)
+		RedisPubSubCfg.Host = subv.GetString("host")
+		RedisPubSubCfg.Port = subv.GetString("port")
+		RedisPubSubCfg.Pass = subv.GetString("password")
+		RedisPubSubCfg.DB = subv.GetInt("database")
+		RedisPubSubCfg.Channel = subv.GetString("channel")
+		return RedisPubSubCfg, err
 	}
 	return nil, err
 }

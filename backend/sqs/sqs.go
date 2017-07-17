@@ -1,12 +1,11 @@
 package sqsapp
 
 import (
-	"github.com/aws/aws-sdk-go/service/sqs"
-	"github.com/aws/aws-sdk-go/aws"
-	. "github.com/DudeWhoCode/kulay/logger"
 	"github.com/DudeWhoCode/kulay/backend"
+	. "github.com/DudeWhoCode/kulay/logger"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/sqs"
 )
-
 
 func Put(qURL string, region string, rec <-chan string) {
 	sess := backend.NewAwsSession(region)
@@ -24,7 +23,6 @@ func Put(qURL string, region string, rec <-chan string) {
 		Log.Info("Sent message to SQS queue : ", *result.MessageId)
 	}
 }
-
 
 func Get(qURL string, region string, del bool, snd chan<- string) {
 	sess := backend.NewAwsSession(region)
@@ -70,5 +68,3 @@ func Get(qURL string, region string, del bool, snd chan<- string) {
 	}
 
 }
-
-

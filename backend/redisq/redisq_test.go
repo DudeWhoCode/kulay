@@ -1,9 +1,9 @@
 package redisq
 
 import (
-	"testing"
 	"encoding/json"
 	"github.com/DudeWhoCode/kulay/backend"
+	"testing"
 	"time"
 )
 
@@ -36,7 +36,7 @@ func TestPut(t *testing.T) {
 	go Put(host, port, pass, db, queue, pipe)
 	// Wait until Put populates redis queue
 	// TODO : Implement timeout for channels
-	time.Sleep(1*time.Second)
+	time.Sleep(1 * time.Second)
 	queueLen, err := client.LLen(queue).Result()
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err)
@@ -46,7 +46,6 @@ func TestPut(t *testing.T) {
 	}
 
 }
-
 
 func TestGet(t *testing.T) {
 	host := "localhost"
@@ -80,6 +79,5 @@ func TestGet(t *testing.T) {
 	if len(pipe) != testCnt {
 		t.Errorf("Expected message count in channel is %v, got %v", testCnt, len(pipe))
 	}
-
 
 }

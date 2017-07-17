@@ -1,11 +1,11 @@
 package sqsapp
 
 import (
-	"testing"
 	"encoding/json"
+	"testing"
 )
 
-func TestSQS(t *testing.T){
+func TestSQS(t *testing.T) {
 	testCnt := 5
 	region := "ap-southeast-1"
 	type test struct {
@@ -42,14 +42,14 @@ func TestSQS(t *testing.T){
 			testResults = append(testResults, testResult)
 		}
 	}
-	if len(testResults) != testCnt{
-		t.Errorf("Expected consumed message count is %v, got %v",testCnt, testResults)
+	if len(testResults) != testCnt {
+		t.Errorf("Expected consumed message count is %v, got %v", testCnt, testResults)
 	}
 	t.Logf("Unpacked %v messages from consumer channel", len(testResults))
 
 }
 
-func TestRegions(t *testing.T){
+func TestRegions(t *testing.T) {
 	testCnt := 5
 	region := "us-east-1"
 	type test struct {
@@ -83,8 +83,8 @@ func TestRegions(t *testing.T){
 	Put(destqURL, destRegion, consumerPipe)
 	resultPipe := make(chan string, testCnt)
 	Get(destqURL, destRegion, true, resultPipe)
-	if len(resultPipe) != testCnt{
-		t.Errorf("Expected consumed message count is %v, got %v",testCnt, testResults)
+	if len(resultPipe) != testCnt {
+		t.Errorf("Expected consumed message count is %v, got %v", testCnt, testResults)
 	}
 	t.Logf("Tested cross region sqs producer and consumer")
 

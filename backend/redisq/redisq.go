@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-
 func Put(host string, port string, pass string, db int, queue string, rec <-chan string) {
 	client := backend.NewRedisSession(host, port, pass, db)
 	for msg := range rec {
@@ -15,7 +14,6 @@ func Put(host string, port string, pass string, db int, queue string, rec <-chan
 		}
 	}
 }
-
 
 func Get(host string, port string, pass string, db int, queue string, rec chan<- string) {
 	client := backend.NewRedisSession(host, port, pass, db)

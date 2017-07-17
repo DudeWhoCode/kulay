@@ -2,8 +2,8 @@ package config
 
 import (
 	"os"
-	"testing"
 	"reflect"
+	"testing"
 )
 
 func TestLoad(t *testing.T) {
@@ -34,9 +34,9 @@ func TestParse(t *testing.T) {
 	receivedDel := sqsCfg.Delete
 	if receivedURL != expectedUrl {
 		t.Errorf("expected queue URL: %s, got: %s", expectedUrl, receivedURL)
-	} else if receivedRegion != expectedRegion{
+	} else if receivedRegion != expectedRegion {
 		t.Errorf("expected region: %s, got: %s", expectedRegion, receivedRegion)
-	} else if receivedDel != expectedDel{
+	} else if receivedDel != expectedDel {
 		t.Errorf("expected delete flag: %t, got: %t", expectedDel, receivedDel)
 	}
 
@@ -56,11 +56,10 @@ func TestParse(t *testing.T) {
 	receivedDel = sqsCfg.Delete
 	if receivedURL != expectedUrl {
 		t.Errorf("expected queue URL: %s, got: %s", expectedUrl, receivedURL)
-	} else if receivedRegion != expectedRegion{
+	} else if receivedRegion != expectedRegion {
 		t.Errorf("expected region: %s, got: %s", expectedRegion, receivedRegion)
-	} else if receivedDel != expectedDel{
+	} else if receivedDel != expectedDel {
 		t.Errorf("expected delete flag: %t, got: %t", expectedDel, receivedDel)
 	}
 
 }
-
