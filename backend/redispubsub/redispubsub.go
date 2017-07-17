@@ -2,6 +2,7 @@ package redispubsub
 
 import (
 	"github.com/DudeWhoCode/kulay/backend"
+	. "github.com/DudeWhoCode/kulay/logger"
 )
 
 func Get(host string, port string, pass string, db int, channel string, rec chan<- string) {
@@ -10,7 +11,7 @@ func Get(host string, port string, pass string, db int, channel string, rec chan
 	for {
 		msg, err := pubsub.ReceiveMessage()
 		if err != nil {
-			panic(err)
+			Log.Error("Unable to receive message from redis pubsub channel\n", err)
 		}
 		if msg.Payload == "$^KILL^$" {
 			break
