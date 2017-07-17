@@ -37,3 +37,43 @@ func TestGet(t *testing.T) {
 	}
 
 }
+
+func TestPut(t *testing.T) {
+	host := "localhost"
+	port := "6379"
+	pass := ""
+	db := 0
+	channel := "test"
+	testCnt := 5
+	pipe := make(chan string, testCnt)
+	client := backend.NewRedisSession(host, port, pass, db)
+	testMsg := `{ "name": "kulay",
+				  "desc"; ""High speed message routing between services",
+				  "https://github.com/dudewhocode/kulay",
+				  135
+				  }`
+	var testResults []string
+	go Put(host, port, pass, db, channel, pipe)
+	pubsub := client.Subscribe(channel)
+	time.Sleep(time.Second)
+	go func() {
+		for {
+			msg, err := pubsub.ReceiveMessage()
+			if err != nil {
+				t.Errorf("Expected no errors while receiving message from pubsub channel, got %s", err)
+			}
+			if msg.Payload == "$^KILL^$" {
+				break
+			}
+			testResults = append(testResults, msg.Payload)
+		}
+	}()
+	for i := 1; i <= testCnt; i++ {
+		pipe <- testMsg
+	}
+	pipe <- "$^KILL^$"
+	time.Sleep(time.Second)
+	if len(testResults) != testCnt {
+		t.Errorf("Expected received message count from redis pubsub is %v, got %v", testCnt, len(testResults))
+	}
+}
