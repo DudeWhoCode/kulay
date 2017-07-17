@@ -2,6 +2,7 @@ package cmd
 
 import (
 	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
+	"github.com/DudeWhoCode/kulay/backend/redispubsub"
 	redisq "github.com/DudeWhoCode/kulay/backend/redisq"
 	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
 	"github.com/DudeWhoCode/kulay/config"
@@ -59,6 +60,15 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		db := cfg.DB
 		queue := cfg.Queue
 		go redisq.Get(host, port, pass, db, queue, pipe)
+	case "redispubsub":
+		Log.Info("Initialized redis subscriber")
+		cfg := cfg.(config.RedisPubsubConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Channel
+		go redispubsub.Get(host, port, pass, db, queue, pipe)
 	}
 }
 
@@ -84,6 +94,15 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		db := cfg.DB
 		queue := cfg.Queue
 		go redisq.Put(host, port, pass, db, queue, pipe)
+	case "redispubsub":
+		Log.Info("Initialized redis publisher")
+		cfg := cfg.(config.RedisPubsubConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Channel
+		go redispubsub.Put(host, port, pass, db, queue, pipe)
 	}
 }
 
