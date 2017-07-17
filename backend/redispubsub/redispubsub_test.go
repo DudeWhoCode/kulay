@@ -14,6 +14,7 @@ func TestGet(t *testing.T) {
 	channel := "test"
 	testCnt := 5
 	pipe := make(chan string, testCnt)
+	client := backend.NewRedisSession(host, port, pass, db)
 	testMsg := `{ "name": "kulay",
 				  "desc"; ""High speed message routing between services",
 				  "https://github.com/dudewhocode/kulay",
@@ -21,15 +22,14 @@ func TestGet(t *testing.T) {
 				  }`
 	go Get(host, port, pass, db, channel, pipe)
 	time.Sleep(500 * time.Millisecond)
-	client := backend.NewRedisSession(host, port, pass, db)
 	for i := 1; i <= testCnt; i++ {
 		if err := client.Publish(channel, testMsg).Err(); err != nil {
-			panic(err)
+			t.Errorf("Expected no errors while sending test message to redis, got %s", err)
 		}
 	}
 	// unsubscribe from channel
 	if err := client.Publish(channel, "$^KILL^$").Err(); err != nil {
-		panic(err)
+		t.Errorf("Expected no errors while sending test message to redis, got %s", err)
 	}
 	time.Sleep(500 * time.Millisecond)
 	if len(pipe) != testCnt {
