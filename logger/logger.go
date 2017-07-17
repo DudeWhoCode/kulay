@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"os"
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
 var Log = *logrus.New()

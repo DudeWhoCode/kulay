@@ -29,10 +29,10 @@ type RedisqConf struct {
 }
 
 type RedisPubsubConf struct {
-	Host  string
-	Port  string
-	Pass  string
-	DB    int
+	Host    string
+	Port    string
+	Pass    string
+	DB      int
 	Channel string
 }
 
