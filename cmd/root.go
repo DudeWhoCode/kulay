@@ -84,7 +84,9 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
-		go jsonl.Put(fPath, pipe)
+		rotate := cfg.Rotate
+		batch := cfg.Batch
+		go jsonl.Put(fPath, batch, pipe, rotate)
 	case "redisq":
 		Log.Info("Initialized redis producer")
 		cfg := cfg.(config.RedisqConf)
