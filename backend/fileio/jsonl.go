@@ -34,13 +34,25 @@ func (f *rotateFile) newFile() (file string){
 	return
 }
 
-func Put(fpath string, rec <-chan string) {
-	f, err := os.Create(fpath)
+func Put(fpath string, batch int, rec <-chan string, rotate bool) {
+	r := initRotate(fpath)
+	chanCnt := 0
+	newFileName := r.newFile()
+	f, err := os.Create(newFileName)
 	if err != nil {
 		Log.Error("Unable to open file for writing jsonl")
 	}
 	for msg := range rec {
+		if rotate == true && chanCnt != 0 && chanCnt % batch == 0 {
+			f.Close()
+			newFileName := r.newFile()
+			f, err = os.Create(newFileName)
+			if err != nil {
+				Log.Error("Unable to open file for writing jsonl")
+			}
+		}
 		f.Write([]byte(msg + "\n"))
+		chanCnt ++
 	}
 	defer f.Close()
 }
