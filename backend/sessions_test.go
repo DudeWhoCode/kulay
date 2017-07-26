@@ -17,3 +17,15 @@ func TestNewAwsSession(t *testing.T) {
 		}
 	}()
 }
+
+func TestNewRedisSession(t *testing.T) {
+	host := "localhost"
+	port := "6379"
+	pass := ""
+	db := 0
+	sess := NewRedisSession(host, port, pass, db)
+	if sessType := reflect.TypeOf(sess).String(); sessType != "*redis.Client" {
+		t.Errorf("Expected type *Client, got %v", sessType)
+	}
+
+}
