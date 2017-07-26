@@ -8,9 +8,7 @@ import (
 func TestNewAwsSession(t *testing.T) {
 	region := "us-east-1"
 	sess := NewAwsSession(region)
-	if sessType := reflect.TypeOf(sess).String(); sessType == "*session.Session" {
-		t.Log("Received expected session type")
-	} else {
+	if sessType := reflect.TypeOf(sess).String(); sessType != "*session.Session" {
 		t.Errorf("Expected type *session.Session, got %v", sessType)
 	}
 	defer func() {
