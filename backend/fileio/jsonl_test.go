@@ -5,11 +5,19 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+	"path/filepath"
+	"strings"
 )
 
 func TestPut(t *testing.T) {
-	fpath := "/tmp/test_put.jsonl"
+	path := "/tmp/jsonltest/"
+	os.RemoveAll(path)
+	os.MkdirAll(path, 0777)
+	fpath := path + "test_put.jsonl"
 	pipe := make(chan string)
+	batch := 5
+	rotate := false
+	testCnt := 10
 	type test struct {
 		Name  string `json:"name"`
 		Desc  string `json:"desc"`
@@ -23,10 +31,16 @@ func TestPut(t *testing.T) {
 		135,
 	}
 	testStr, _ := json.Marshal(testData)
-	go Put(fpath, pipe)
-	for i := 1; i <= 10; i++ {
+	go Put(fpath, batch, pipe, rotate)
+	for i := 1; i <= testCnt; i++ {
 		pipe <- string(testStr)
 	}
+	fileList := []string{}
+	filepath.Walk(path, func (path string, f os.FileInfo, err error) error {
+		fileList = append(fileList, path)
+		return nil
+	})
+	fpath = fileList[1]
 	file, err := os.Open(fpath)
 	if err != nil {
 		t.Errorf("Expected no errors in reading file, got %v", err)
