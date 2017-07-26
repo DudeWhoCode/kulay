@@ -39,8 +39,9 @@ func Put(fpath string, batch int, rec <-chan string, rotate bool) {
 	chanCnt := 0
 	newFileName := r.newFile()
 	f, err := os.Create(newFileName)
+	fmt.Println("created : ", newFileName)
 	if err != nil {
-		Log.Error("Unable to open file for writing jsonl")
+		Log.Error("Unable to open file for writing jsonl\n", err)
 	}
 	for msg := range rec {
 		if rotate == true && chanCnt != 0 && chanCnt % batch == 0 {
