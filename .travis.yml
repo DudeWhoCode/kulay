@@ -21,8 +21,7 @@ python:
   - 2.7
 
 env:
-   - KULAY_CONF=$TRAVIS_BUILD_DIR/testdata/kulay.toml
-   - BOTO_CONFIG=/dev/null
+   - KULAY_CONF=$TRAVIS_BUILD_DIR/testdata/kulay.toml BOTO_CONFIG=/dev/null
 
 install:
   - pip install moto
