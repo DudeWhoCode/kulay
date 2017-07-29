@@ -16,7 +16,7 @@ func TestLoad(t *testing.T) {
 	}
 }
 
-func TestParse(t *testing.T) {
+func TestParseSQS(t *testing.T) {
 	os.Setenv("KULAY_CONF", "../testdata/kulay.toml")
 	svc := "sqs"
 	sec := "us_queue"
