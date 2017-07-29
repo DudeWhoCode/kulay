@@ -2,6 +2,7 @@ package cmd
 
 import (
 	jsonl "github.com/DudeWhoCode/kulay/backend/fileio"
+	"github.com/DudeWhoCode/kulay/backend/redispubsub"
 	redisq "github.com/DudeWhoCode/kulay/backend/redisq"
 	ksqs "github.com/DudeWhoCode/kulay/backend/sqs"
 	"github.com/DudeWhoCode/kulay/config"
@@ -44,7 +45,7 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		qURL := sqsCfg.QueueUrl
 		del := sqsCfg.Delete
 		region := sqsCfg.Region
-		go ksqs.Get(qURL, region, del, pipe)
+		go ksqs.Get(qURL, region, del, pipe, false)
 	case "jsonl":
 		Log.Info("Initialized jsonl consumer")
 		cfg := cfg.(config.JsonlConf)
@@ -59,6 +60,15 @@ func initFromSvc(svc string, cfg interface{}, pipe chan string) {
 		db := cfg.DB
 		queue := cfg.Queue
 		go redisq.Get(host, port, pass, db, queue, pipe)
+	case "redispubsub":
+		Log.Info("Initialized redis subscriber")
+		cfg := cfg.(config.RedisPubsubConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Channel
+		go redispubsub.Get(host, port, pass, db, queue, pipe)
 	}
 }
 
@@ -69,12 +79,14 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		sqsCfg := cfg.(config.SQSConf)
 		qURL := sqsCfg.QueueUrl
 		region := sqsCfg.Region
-		go ksqs.Put(qURL, region, pipe)
+		go ksqs.Put(qURL, region, pipe, false)
 	case "jsonl":
 		Log.Info("Initialized jsonl producer")
 		cfg := cfg.(config.JsonlConf)
 		fPath := cfg.Path
-		go jsonl.Put(fPath, pipe)
+		rotate := cfg.Rotate
+		batch := cfg.Batch
+		go jsonl.Put(fPath, batch, pipe, rotate)
 	case "redisq":
 		Log.Info("Initialized redis producer")
 		cfg := cfg.(config.RedisqConf)
@@ -84,6 +96,15 @@ func initToSvc(svc string, cfg interface{}, pipe chan string) {
 		db := cfg.DB
 		queue := cfg.Queue
 		go redisq.Put(host, port, pass, db, queue, pipe)
+	case "redispubsub":
+		Log.Info("Initialized redis publisher")
+		cfg := cfg.(config.RedisPubsubConf)
+		host := cfg.Host
+		port := cfg.Port
+		pass := cfg.Pass
+		db := cfg.DB
+		queue := cfg.Channel
+		go redispubsub.Put(host, port, pass, db, queue, pipe)
 	}
 }
 

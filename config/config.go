@@ -17,7 +17,9 @@ type SQSConf struct {
 }
 
 type JsonlConf struct {
-	Path string
+	Path   string
+	Rotate bool
+	Batch  int
 }
 
 type RedisqConf struct {
@@ -26,6 +28,14 @@ type RedisqConf struct {
 	Pass  string
 	DB    int
 	Queue string
+}
+
+type RedisPubsubConf struct {
+	Host    string
+	Port    string
+	Pass    string
+	DB      int
+	Channel string
 }
 
 func viperCfg() {
@@ -66,8 +76,11 @@ func Parse(service string, section string) (interface{}, error) {
 		subtree := "jsonl." + section
 		subv := viper.Sub(subtree)
 		JsonlCfg.Path = subv.GetString("path")
+		JsonlCfg.Rotate = subv.GetBool("rotate")
+		JsonlCfg.Batch = subv.GetInt("batch")
 		return JsonlCfg, err
 	case "redisq":
+
 		RedisqCfg := RedisqConf{}
 		subtree := "redisq." + section
 		subv := viper.Sub(subtree)
@@ -76,7 +89,18 @@ func Parse(service string, section string) (interface{}, error) {
 		RedisqCfg.Pass = subv.GetString("password")
 		RedisqCfg.DB = subv.GetInt("database")
 		RedisqCfg.Queue = subv.GetString("queue")
+
 		return RedisqCfg, err
+	case "redispubsub":
+		RedisPubSubCfg := RedisPubsubConf{}
+		subtree := "redispubsub." + section
+		subv := viper.Sub(subtree)
+		RedisPubSubCfg.Host = subv.GetString("host")
+		RedisPubSubCfg.Port = subv.GetString("port")
+		RedisPubSubCfg.Pass = subv.GetString("password")
+		RedisPubSubCfg.DB = subv.GetInt("database")
+		RedisPubSubCfg.Channel = subv.GetString("channel")
+		return RedisPubSubCfg, err
 	}
 	return nil, err
 }

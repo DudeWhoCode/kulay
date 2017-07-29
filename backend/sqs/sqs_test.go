@@ -7,7 +7,7 @@ import (
 
 func TestSQS(t *testing.T) {
 	testCnt := 5
-	region := "ap-southeast-1"
+	region := "us-east-1"
 	type test struct {
 		Name  string `json:"name"`
 		Desc  string `json:"desc"`
@@ -23,15 +23,15 @@ func TestSQS(t *testing.T) {
 	var testResults []*test
 	testStr, _ := json.Marshal(testData)
 	producerPipe := make(chan string, testCnt)
-	qURL := "https://sqs.ap-southeast-1.amazonaws.com/971037846030/test_sg"
+	qURL := "http://localhost:3000/123456789012/test"
 	for i := 0; i < testCnt; i++ {
 		producerPipe <- string(testStr)
 	}
 	t.Logf("Sent %v messages to producer channel for testing", len(producerPipe))
 	close(producerPipe)
-	Put(qURL, region, producerPipe)
+	Put(qURL, region, producerPipe, true)
 	consumerPipe := make(chan string, testCnt)
-	Get(qURL, region, true, consumerPipe)
+	Get(qURL, region, true, consumerPipe, true)
 	t.Logf("Received %v messages from SQS to consumer channel", len(consumerPipe))
 	close(consumerPipe)
 	for msg := range consumerPipe {
@@ -67,22 +67,22 @@ func TestRegions(t *testing.T) {
 	var testResults []*test
 	testStr, _ := json.Marshal(testData)
 	producerPipe := make(chan string, testCnt)
-	qURL := "https://sqs.us-east-1.amazonaws.com/971037846030/test_us"
-	destqURL := "https://sqs.ap-southeast-1.amazonaws.com/971037846030/test_sg"
+	qURL := "http://localhost:3000/123456789012/test"
+	destqURL := "http://localhost:3000/123456789012/test"
 	destRegion := "ap-southeast-1"
 	for i := 0; i < testCnt; i++ {
 		producerPipe <- string(testStr)
 	}
 	t.Logf("Sent %v messages to producer channel for testing", len(producerPipe))
 	close(producerPipe)
-	Put(qURL, region, producerPipe)
+	Put(qURL, region, producerPipe, true)
 	consumerPipe := make(chan string, testCnt)
-	Get(qURL, region, true, consumerPipe)
+	Get(qURL, region, true, consumerPipe, true)
 	t.Logf("Received %v messages from SQS to consumer channel", len(consumerPipe))
 	close(consumerPipe)
-	Put(destqURL, destRegion, consumerPipe)
+	Put(destqURL, destRegion, consumerPipe, true)
 	resultPipe := make(chan string, testCnt)
-	Get(destqURL, destRegion, true, resultPipe)
+	Get(destqURL, destRegion, true, resultPipe, true)
 	if len(resultPipe) != testCnt {
 		t.Errorf("Expected consumed message count is %v, got %v", testCnt, testResults)
 	}
