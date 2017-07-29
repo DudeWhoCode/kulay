@@ -10,7 +10,7 @@ An high speed message passing system between various queues and services.
 <a href="https://asciinema.org/a/IrbTcz6eO0IoBhZ196t4rdz6Y" target="_blank"><img src="https://asciinema.org/a/IrbTcz6eO0IoBhZ196t4rdz6Y.png" /></a>
 
 ## Getting started
-* Download the [latest binary](https://github.com/DudeWhoCode/kulay/releases) and add its location to your `PATH`
+* Download the [latest binary in binaries section](https://github.com/DudeWhoCode/kulay/releases) and add its location to your `PATH`
 * Create a config file, kulay.toml and copy the following contents to it.
 ```
 [sqs]
@@ -102,7 +102,8 @@ channel - The pubsub channel which you need to send or receive messages
 ```
 host - Your redis hostname or IP address   
 port - Port in which redis runs, default is 6379   
-password - Password for your redis server, leave it as "" for no password        
+password - Password for your redis server, leave it as "" for no password    
+database - Default value is between 0-15, refer [redis documentation](https://redis.io/commands/SELECT)
 queue - The queue to which you will send or receive messages   
 
 ### SQS
@@ -115,6 +116,7 @@ queue - The queue to which you will send or receive messages
 ```
 queue_url - URL of the queue found in AWS console    
 region - The region where given queue was created   
+database - Default value is between 0-15, refer [redis documentation](https://redis.io/commands/SELECT)
 delete_msg - Delete flag, should be true if you want to delete the message from sqs after reading      
 
 ### Jsonl
@@ -126,7 +128,7 @@ jsonl]
     batch = 1000
 ```
 path   - Location where the files has to be created  
-rotate - If rotate flag is enabled, kulay will create a new file if the lines crosses the count in `batch` field    
+rotate - If rotate flag is enabled, kulay will create a new file everytime line count reaches number specified in `batch`    
 batch  - The line count for a single file if rotate=true   
   
 # Built with
