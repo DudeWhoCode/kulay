@@ -6,8 +6,8 @@ branches:
 
 sudo: required
 
-addons:
-  redis: "4.0.1"
+services:
+  - redis-server
 
 language: go
 
