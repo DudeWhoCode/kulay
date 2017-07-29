@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"encoding/json"
 	"os"
-	"testing"
 	"path/filepath"
 	"strings"
+	"testing"
 )
 
 func TestPut(t *testing.T) {
@@ -36,7 +36,7 @@ func TestPut(t *testing.T) {
 		pipe <- string(testStr)
 	}
 	fileList := []string{}
-	filepath.Walk(path, func (path string, f os.FileInfo, err error) error {
+	filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
 		fileList = append(fileList, path)
 		return nil
 	})
@@ -85,7 +85,7 @@ func TestPutRotate(t *testing.T) {
 		pipe <- string(testStr)
 	}
 	fileList := []string{}
-	filepath.Walk(path, func (path string, f os.FileInfo, err error) error {
+	filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
 		fileList = append(fileList, path)
 		return nil
 	})

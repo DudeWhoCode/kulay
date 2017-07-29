@@ -2,20 +2,21 @@ package fileio
 
 import (
 	"bufio"
+	"fmt"
 	. "github.com/DudeWhoCode/kulay/logger"
 	"os"
-	"strings"
 	"path/filepath"
-	"fmt"
+	"strings"
 	"time"
 )
+
 type rotateFile struct {
-	file string
-	ext string
+	file  string
+	ext   string
 	count int
 }
 
-func initRotate(fpath string) (*rotateFile)  {
+func initRotate(fpath string) *rotateFile {
 	count := 0
 	ext := filepath.Ext(fpath)
 	file := strings.TrimSuffix(fpath, ext)
@@ -26,11 +27,11 @@ func initRotate(fpath string) (*rotateFile)  {
 	}
 }
 
-func (f *rotateFile) newFile() (file string){
+func (f *rotateFile) newFile() (file string) {
 	now := time.Now()
 	nanos := now.UnixNano()
 	file = fmt.Sprintf("%s-%d-%d%s", f.file, nanos, f.count, f.ext)
-	f.count ++
+	f.count++
 	return
 }
 
@@ -44,7 +45,7 @@ func Put(fpath string, batch int, rec <-chan string, rotate bool) {
 		Log.Error("Unable to open file for writing jsonl\n", err)
 	}
 	for msg := range rec {
-		if rotate == true && chanCnt != 0 && chanCnt % batch == 0 {
+		if rotate == true && chanCnt != 0 && chanCnt%batch == 0 {
 			f.Close()
 			newFileName := r.newFile()
 			f, err = os.Create(newFileName)
@@ -53,7 +54,7 @@ func Put(fpath string, batch int, rec <-chan string, rotate bool) {
 			}
 		}
 		f.Write([]byte(msg + "\n"))
-		chanCnt ++
+		chanCnt++
 	}
 	defer f.Close()
 }
