@@ -1,9 +1,5 @@
 dist: trusty
 
-branches:
-  only:
-    - feature/ci
-
 sudo: required
 
 services:
