@@ -15,17 +15,10 @@ os:
     - linux
 
 go:
-  - 1.6
-  - 1.7
   - 1.8
-  - tip
 
 python:
   - 2.7
-
-matrix:
-  allow_failures:
-  - go: tip
 
 env:
    - KULAY_CONF=$TRAVIS_BUILD_DIR/testdata/kulay.toml
