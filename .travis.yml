@@ -1,5 +1,9 @@
 dist: trusty
 
+branches:
+  only:
+    - feature/ci
+    
 sudo: required
 
 addons:
@@ -39,3 +43,5 @@ before_script:
 
 script:
     - sh test.sh
+
+
