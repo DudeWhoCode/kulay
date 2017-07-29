@@ -122,7 +122,7 @@ delete_msg - Delete flag, should be true if you want to delete the message from 
 
 ### Jsonl
 ```
-jsonl]
+[jsonl]
     [jsonl.local_backup]
     path = "/tmp/backup.jsonl"
     rotate = true
