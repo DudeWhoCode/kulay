@@ -1,0 +1,41 @@
+dist: trusty
+
+sudo: required
+
+addons:
+  redis: "4.0.1"
+
+language: go
+
+os:
+    - linux
+
+go:
+  - 1.6
+  - 1.7
+  - 1.8
+  - tip
+
+python:
+  - 2.7
+
+matrix:
+  allow_failures:
+  - go: tip
+
+env:
+   - PREST_CONF=$TRAVIS_BUILD_DIR/testdata/kulay.toml
+
+install:
+  - pip install moto
+  - pip install awscli
+
+before_install:
+   - go get -u github.com/kardianos/govendor
+   - govendor sync
+
+before_script:
+    - sh testdata/prepare.sh
+
+script:
+    - sh test.sh
