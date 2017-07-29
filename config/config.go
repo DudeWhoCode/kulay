@@ -17,9 +17,9 @@ type SQSConf struct {
 }
 
 type JsonlConf struct {
-	Path string
+	Path   string
 	Rotate bool
-	Batch int
+	Batch  int
 }
 
 type RedisqConf struct {
@@ -80,6 +80,7 @@ func Parse(service string, section string) (interface{}, error) {
 		JsonlCfg.Batch = subv.GetInt("batch")
 		return JsonlCfg, err
 	case "redisq":
+
 		RedisqCfg := RedisqConf{}
 		subtree := "redisq." + section
 		subv := viper.Sub(subtree)
@@ -88,6 +89,7 @@ func Parse(service string, section string) (interface{}, error) {
 		RedisqCfg.Pass = subv.GetString("password")
 		RedisqCfg.DB = subv.GetInt("database")
 		RedisqCfg.Queue = subv.GetString("queue")
+
 		return RedisqCfg, err
 	case "redispubsub":
 		RedisPubSubCfg := RedisPubsubConf{}

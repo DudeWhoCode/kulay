@@ -60,3 +60,6 @@ crashlytics-build.properties
 fabric.properties
 *.zip
 *.txt
+
+# python
+env/

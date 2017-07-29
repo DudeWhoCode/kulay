@@ -1,0 +1,37 @@
+dist: trusty
+
+sudo: required
+
+services:
+  - redis-server
+
+language: go
+
+os:
+    - linux
+
+go:
+  - 1.8
+
+python:
+  - 2.7
+
+env:
+   - KULAY_CONF=$TRAVIS_BUILD_DIR/testdata/kulay.toml BOTO_CONFIG=/dev/null
+
+install:
+  - pip install moto
+  - pip install awscli
+  - pip install flask
+
+before_install:
+   - go get -u github.com/kardianos/govendor
+   - govendor sync
+
+before_script:
+    - sh testdata/prepare.sh
+
+script:
+    - sh test.sh
+
+

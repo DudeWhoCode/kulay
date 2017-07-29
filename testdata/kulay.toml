@@ -9,7 +9,23 @@
     region = "ap-southeast-1"
 
 [jsonl]
-    [jsonl.sg_backup]
-    path = "/tmp/apse1_backup.jsonl"
+    [jsonl.local_backup]
+    path = "/tmp/log_backup.jsonl"
     rotate = true
     batch = 100
+
+[redisq]
+    [redisq.localbuffer]
+    host = "localhost"
+    port = "6379"
+    password = ""
+    database = 0
+    queue = "test"
+
+[redispubsub]
+    [redispubsub.localchannel]
+    host = "localhost"
+    port = "6379"
+    password = ""
+    database = 0
+    channel = "test_pubsub"
