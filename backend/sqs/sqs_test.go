@@ -75,14 +75,14 @@ func TestRegions(t *testing.T) {
 	}
 	t.Logf("Sent %v messages to producer channel for testing", len(producerPipe))
 	close(producerPipe)
-	Put(qURL, region, producerPipe)
+	Put(qURL, region, producerPipe, true)
 	consumerPipe := make(chan string, testCnt)
-	Get(qURL, region, true, consumerPipe)
+	Get(qURL, region, true, consumerPipe, true)
 	t.Logf("Received %v messages from SQS to consumer channel", len(consumerPipe))
 	close(consumerPipe)
-	Put(destqURL, destRegion, consumerPipe)
+	Put(destqURL, destRegion, consumerPipe, true)
 	resultPipe := make(chan string, testCnt)
-	Get(destqURL, destRegion, true, resultPipe)
+	Get(destqURL, destRegion, true, resultPipe, true)
 	if len(resultPipe) != testCnt {
 		t.Errorf("Expected consumed message count is %v, got %v", testCnt, testResults)
 	}
