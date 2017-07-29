@@ -1,5 +1,6 @@
 # Kulay
 [![Build Status](https://travis-ci.org/DudeWhoCode/kulay.svg?branch=master)](https://travis-ci.org/DudeWhoCode/kulay)
+[![codecov](https://codecov.io/gh/DudeWhoCode/kulay/branch/master/graph/badge.svg)](https://codecov.io/gh/DudeWhoCode/kulay)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dudewhocode/kulay)](https://goreportcard.com/report/github.com/dudewhocode/kulay)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/DudeWhoCode/kulay/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/DudeWhoCode/kulay.svg)](https://github.com/DudeWhoCode/kulay/issues)
