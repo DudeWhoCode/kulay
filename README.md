@@ -127,12 +127,8 @@ jsonl]
 ```
 path   - Location where the files has to be created  
 rotate - If rotate flag is enabled, kulay will create a new file if the lines crosses the count in `batch` field    
-batch  - The line count for a single file if rotate=true
+batch  - The line count for a single file if rotate=true   
   
-  
-
-
-
 # Built with
 * [Cobra](https://github.com/spf13/cobra) - command line framework
 * [Viper](https://github.com/spf13/viper) - configuration handler

@@ -27,5 +27,4 @@ func TestNewRedisSession(t *testing.T) {
 	if sessType := reflect.TypeOf(sess).String(); sessType != "*redis.Client" {
 		t.Errorf("Expected type *Client, got %v", sessType)
 	}
-
 }
