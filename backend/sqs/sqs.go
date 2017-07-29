@@ -7,9 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go/service/sqs"
 )
 
-func Put(qURL string, region string, rec <-chan string) {
+func Put(qURL string, region string, rec <-chan string, test bool) {
 	sess := backend.NewAwsSession(region)
-	svc := sqs.New(sess)
+	var svc *sqs.SQS
+	if test == true {
+		svc = sqs.New(sess, aws.NewConfig().WithEndpoint("http://localhost:3000"))
+	} else {
+		svc = sqs.New(sess, aws.NewConfig())
+	}
+
 	for msg := range rec {
 		result, err := svc.SendMessage(&sqs.SendMessageInput{
 			DelaySeconds: aws.Int64(10),
@@ -24,9 +30,15 @@ func Put(qURL string, region string, rec <-chan string) {
 	}
 }
 
-func Get(qURL string, region string, del bool, snd chan<- string) {
+func Get(qURL string, region string, del bool, snd chan<- string, test bool) {
 	sess := backend.NewAwsSession(region)
-	svc := sqs.New(sess)
+	var svc *sqs.SQS
+	if test == true {
+		svc = sqs.New(sess, aws.NewConfig().WithEndpoint("http://localhost:3000"))
+	} else {
+		svc = sqs.New(sess, aws.NewConfig())
+	}
+
 	for {
 		result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 			AttributeNames: []*string{
