@@ -91,7 +91,7 @@ password - Password for your redis server, leave it as "" for no password
 channel - The pubsub channel which you need to send or receive messages 
  
 
-### Redis queue
+#### Redis queue
 ```
 [redisq]
        [redisq.yourCustomName]
@@ -107,7 +107,7 @@ password - Password for your redis server, leave it as "" for no password
 database - Default value is between 0-15, refer [redis documentation](https://redis.io/commands/SELECT)
 queue - The queue to which you will send or receive messages   
 
-### SQS
+#### SQS
 ```
 [sqs]
     [sqs.test_singapore]
@@ -120,7 +120,7 @@ region - The region where given queue was created
 database - Default value is between 0-15, refer [redis documentation](https://redis.io/commands/SELECT)
 delete_msg - Delete flag, should be true if you want to delete the message from sqs after reading      
 
-### Jsonl
+#### Jsonl
 ```
 [jsonl]
     [jsonl.local_backup]
