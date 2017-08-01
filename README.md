@@ -117,7 +117,7 @@ queue - The queue to which you will send or receive messages
 ```
 queue_url - URL of the queue found in AWS console    
 region - The region where given queue was created   
-database - Default value is between 0-15, refer [redis documentation](https://redis.io/commands/SELECT)
+database - Default value is between 0-15, refer [redis documentation](https://redis.io/commands/SELECT)   
 delete_msg - Delete flag, should be true if you want to delete the message from sqs after reading      
 
 #### Jsonl
